@@ -70,16 +70,42 @@ endclass //driver_fifo
 
 
 // Driver
-class driver #(parameter drvrs = 4, pckg_sz = 16, bits = 0, fifo_depth = 16);
-    virtual bus_if #(.drvrs(drvrs), .pckg_sz(pckg_sz), .bits(bits)) vif;
-    driver_fifo #(.pckg_sz(pckg_sz), .fifo_depth(fifo_depth)) drivers_fifo  [drvrs];
+class driver #(parameter num_ntrfs = 4, pckg_sz = 16, fifo_depth = 16);
+    virtual bus_if #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz)) vif;
+    driver_fifo #(.pckg_sz(pckg_sz), .fifo_depth(fifo_depth)) drivers_fifo  [num_ntrfs];
     agent_driver_mbx i_agent_driver_mbx;
     driver_checker_mbx i_driver_checker_mbx;
-    bit [pckg_sz-1:0] dato_temp [drvrs-1:0];
+    bit [pckg_sz-1:0] dato_temp [num_ntrfs-1:0];
   	int espera;
     int espera_total;
     bit reset_temp;
     int valid_transaction;
+
+    function bit [pckg_sz-1:0] create_pkg(bit mode, bit [7:0] destino, bit [pckg_sz-18:0] dato);
+      bit [pckg_sz-1:0] pkg;
+
+      pkg[pckg_sz-1:pckg_sz-8] = 0;
+
+      // Colocando rows y colummns
+      if(destino <= 3) begin
+        pkg[pckg_sz-9:pckg_sz-12] = 0;
+        pkg[pckg_sz-13:pckg_sz-16] = destino+1;
+      end else if (destino <= 7) begin
+        pkg[pckg_sz-9:pckg_sz-12] = destino-3;
+        pkg[pckg_sz-13:pckg_sz-16] = 0;
+      end else if (destino <= 11) begin
+        pkg[pckg_sz-9:pckg_sz-12] = 5;
+        pkg[pckg_sz-13:pckg_sz-16] = destino-7;
+      end else if (destino <= 15) begin
+        pkg[pckg_sz-9:pckg_sz-12] = destino-11;
+        pkg[pckg_sz-13:pckg_sz-16] = 5;        
+      end
+      
+      pkg[pckg_sz-17] = mode;
+      pkg[pckg_sz-18:0] = dato;
+
+      return pkg;
+    endfunction
 
     task run();
       $display("[%g]  El driver fue inicializado",$time);
@@ -98,18 +124,18 @@ class driver #(parameter drvrs = 4, pckg_sz = 16, bits = 0, fifo_depth = 16);
         valid_transaction = 0;
         // Actualización de todos los fifos
         foreach (drivers_fifo[i]) begin
-          drivers_fifo[i].pop = vif.pop[0][i];
+          drivers_fifo[i].popin = vif.pop[i];
           drivers_fifo[i].rst = vif.reset;
-          this.dato_temp[i] = vif.D_pop[0][i];
+          this.dato_temp[i] = vif.data_out_i_in[i];
           drivers_fifo[i].update();
-          vif.D_pop[0][i] = drivers_fifo[i].D_pop;
-          vif.pndng[0][i] = drivers_fifo[i].pndng;
+          vif.data_out_i_in[i] = drivers_fifo[i].D_pop;
+          vif.pndng_i_in[i] = drivers_fifo[i].pndng;
         end
 
         // Si hay un pop en 1 se genera transacción
         foreach (drivers_fifo[i]) begin 
           // Si hay algún pop
-          if (vif.pop[0][i]) 
+          if (vif.pop[i]) 
             valid_transaction = 1;
           // Detector de flancos
           // En caso de detectar flanco negativo en reset se crea transacción
@@ -121,13 +147,13 @@ class driver #(parameter drvrs = 4, pckg_sz = 16, bits = 0, fifo_depth = 16);
 
         // En caso de que se detecte pop se hace transacción hacia checker 
         if(valid_transaction) begin
-          trans_bus #(.pckg_sz(pckg_sz), .drvrs(drvrs)) transaction_checker;
+          trans_bus #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs)) transaction_checker;
           transaction_checker = new();
           // Se genera una transacción con la información de cada canal
           foreach (drivers_fifo[i]) begin
             transaction_checker.dato[i] = this.dato_temp[i][pckg_sz-9:0];
             transaction_checker.device_dest[i] = this.dato_temp[i][pckg_sz-1:pckg_sz-8];
-            transaction_checker.escribir[i] = this.vif.pop[0][i];
+            transaction_checker.escribir[i] = this.vif.pop[i];
           end
             transaction_checker.tiempo_lectura = $time;
             transaction_checker.reset = reset_temp;
@@ -140,7 +166,7 @@ class driver #(parameter drvrs = 4, pckg_sz = 16, bits = 0, fifo_depth = 16);
         
   // Lógica no bloqueante para para implementar el retraso y recibir instrucciones del agente
 	if(espera >= espera_total) begin
-          trans_bus #(.pckg_sz(pckg_sz), .drvrs(drvrs)) transaction; 
+          trans_bus #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs)) transaction; 
           vif.reset = 0;
           espera = 0;
           if (i_agent_driver_mbx.try_get(transaction)) begin
@@ -148,7 +174,9 @@ class driver #(parameter drvrs = 4, pckg_sz = 16, bits = 0, fifo_depth = 16);
             transaction.print("Driver: Transaccion recibida");
             $display("Transacciones pendientes en el mbx agnt_drv = %g",i_agent_driver_mbx.num());
             vif.reset = transaction.reset;
-            foreach (drivers_fifo[i]) drivers_fifo[i].write({transaction.device_dest[i], transaction.dato[i]}, transaction.escribir[i]);
+            foreach (drivers_fifo[i]) drivers_fifo[i].write(
+                    create_pkg(transaction.modo[i], transaction.device_dest[i], 
+                    transaction.dato[i]), transaction.escribir[i]);
           end else begin
             espera_total = 0;
             vif.reset = 0;
@@ -163,4 +191,4 @@ class driver #(parameter drvrs = 4, pckg_sz = 16, bits = 0, fifo_depth = 16);
 
 
     endtask
-endclass //driver #parameter(parameter drvrs = 4, pckg_sz = 16, bits = 0)
+endclass //driver #parameter(parameter num_ntrfs = 4, pckg_sz = 16, bits = 0)

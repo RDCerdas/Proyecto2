@@ -14,10 +14,10 @@ class arreglo #(parameter pckg_sz = 16); //se agrega una clase de los parametros
 
 endclass 
 
-class checkers #(parameter drvrs = 4,  pckg_sz = 16);
-  trans_bus #(.pckg_sz(pckg_sz), .drvrs(drvrs)) transaction_driver;
-  monitor_checker #(.pckg_sz(pckg_sz), .drvrs(drvrs)) transaction_monitor;
-  checker_scoreboard #(.pckg_sz(pckg_sz), .drvrs(drvrs)) to_sb;
+class checkers #(parameter num_ntrfs = 4,  pckg_sz = 32);
+  trans_bus #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs)) transaction_driver;
+  monitor_checker #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs)) transaction_monitor;
+  checker_scoreboard #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs)) to_sb;
   monitor_checker_mbx i_monitor_checker_mbx;
   driver_checker_mbx i_driver_checker_mbx;
   checker_scoreboard_mbx i_checker_scoreboard_mbx;
@@ -70,7 +70,7 @@ class checkers #(parameter drvrs = 4,  pckg_sz = 16);
            end
           if (tamano==0) begin//si el dato no se encontró se finaliza el test
            	 transaction_monitor.print("Checker: El dato recibido por el monitor no fue enviado por el driver");
-         	   $finish(1);
+         	   //$finish(1);
            end
    	end
          end
@@ -79,10 +79,10 @@ class checkers #(parameter drvrs = 4,  pckg_sz = 16);
      transaction_driver.print("Checker: Se recibe trasacción desde el driver");
          foreach (transaction_driver.escribir[i]) begin
            if (transaction_driver.escribir[i]==1) begin//la transaccion que tenga el escribir en otro dispositivo  se analiza si es un broadcast o una escritura normal, en ambos casos se almacena la transaccion en la cola para su uso posterior
-            if((transaction_driver.device_dest[i]< drvrs)||(transaction_driver.device_dest[i] == 'hff)) begin
+            if((transaction_driver.device_dest[i]< num_ntrfs)||(transaction_driver.device_dest[i] == 'hff)) begin
                 if (transaction_driver.device_dest[i]==8'hFF) begin
 
-                  for (int f=0; f<(drvrs-1); f++) begin
+                  for (int f=0; f<(num_ntrfs-1); f++) begin
                     temp = new();
                     temp.enviado=i;
                     temp.Dato[pckg_sz-9:0]=transaction_driver.dato[i];
@@ -124,7 +124,7 @@ class checkers #(parameter drvrs = 4,  pckg_sz = 16);
     foreach (cola[a]) begin
 	    if(cola[a].tiempo_lectura+timeout < $time) begin
         cola[a].print("Checker: Error timeout de dato");
-        $finish(1);
+        //$finish(1);
 end
     end
   end

@@ -2,11 +2,11 @@
 
 `ifndef SCRIPT
     parameter pckg_sz = 16;
-    parameter drvrs = 4;
+    parameter num_ntrfs = 4;
     parameter fifo_depth = 16;
 `endif
 
-`include "Library.sv"
+`include "Router_library.sv"
 `include "interface_transactions.sv"
 `include "monitor.sv"
 `include "driver.sv"
@@ -24,24 +24,23 @@ module test_bench;
     parameter bits = 1;
     parameter broadcast = {8{1'b1}};
 
-    test #(.drvrs(drvrs), .pckg_sz(pckg_sz), .bits(bits), .fifo_depth(fifo_depth)) t0;
-    bus_if #(.drvrs(drvrs), .pckg_sz(pckg_sz), .bits(bits)) _if(.clk(clk));
+    test #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz), .bits(bits), .fifo_depth(fifo_depth)) t0;
+    router_if #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz)) _if(.clk(clk));
 
     always #5 clk = ~clk;
         
-    bs_gnrtr_n_rbtr #(.bits(bits), .drvrs(drvrs), .pckg_sz(pckg_sz), .broadcast(broadcast)) uut(
+    router_bus_gnrtr #(.bits(bits), .num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz), .broadcast(broadcast)) uut(
         .clk(_if.clk),
         .reset(_if.reset),
-        .pndng(_if.pndng),
-        .push(_if.push),
+        .data_out_i_in(_if.data_out_i_in),
+        .push(pndng_i_in.pndng_i_in),
         .pop(_if.pop),
-        .D_pop(_if.D_pop),
-        .D_push(_if.D_push)
+        .popin(_if.popin),
+        .pndng(_if.pndng),
+        .data_out(_if.data_out)
     );
 
     initial begin
-      $dumpfile("waform.vcd");
-      $dumpvars(0, test_bench);
         clk = 0;
         t0 = new();
         t0._if = _if;

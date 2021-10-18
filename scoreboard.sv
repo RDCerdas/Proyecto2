@@ -1,10 +1,10 @@
-class score_board #(parameter drvrs = 4, pckg_sz = 16);
+class score_board #(parameter num_ntrfs = 4, pckg_sz = 16);
   
   checker_scoreboard_mbx i_checker_scoreboard_mbx;
   test_sb_mbx i_test_sb_mbx;
-  checker_scoreboard #(.pckg_sz(pckg_sz), .drvrs(drvrs)) transaccion_entrante;
-  checker_scoreboard #(.pckg_sz(pckg_sz), .drvrs(drvrs)) scoreboard[$]; //cola usada para almacenar las transacciones recibidas por el scoreboard
-  checker_scoreboard #(.pckg_sz(pckg_sz), .drvrs(drvrs)) auxiliar_trans;
+  checker_scoreboard #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs)) transaccion_entrante;
+  checker_scoreboard #(.pckg_sz(pckg_sz), .dnum_ntrfsrvrs(num_ntrfs)) scoreboard[$]; //cola usada para almacenar las transacciones recibidas por el scoreboard
+  checker_scoreboard #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs)) auxiliar_trans;
   shortreal retardo_promedio;
   sb_transaction orden;
   int tamano_sb = 0;
@@ -70,12 +70,12 @@ int file_max_bw;
             append_csv_min_bw: begin //se genera reporte con el ancho de banda min
               
               file_min_bw = $fopen("min_bandwidth.csv", "a");
-              $fwrite(file_min_bw, "\n%0d,%0d,%0.3f", drvrs, fifo_depth, (transacciones_completados_bw*pckg_sz*1000)/(tiempo_final_bw-tiempo_inicial_bw));
+              $fwrite(file_min_bw, "\n%0d,%0d,%0.3f", num_ntrfs, fifo_depth, (transacciones_completados_bw*pckg_sz*1000)/(tiempo_final_bw-tiempo_inicial_bw));
 	      $fclose(file_min_bw);
             end
             append_csv_max_bw: begin //se genera reporte con el ancho de banda max
               file_max_bw = $fopen("max_bandwidth.csv", "a");
-              $fwrite(file_max_bw, "\n%0d,%0d,%0.3f", drvrs, fifo_depth, (transacciones_completados_bw*pckg_sz*1000)/(tiempo_final_bw-tiempo_inicial_bw));
+              $fwrite(file_max_bw, "\n%0d,%0d,%0.3f", num_ntrfs, fifo_depth, (transacciones_completados_bw*pckg_sz*1000)/(tiempo_final_bw-tiempo_inicial_bw));
               $fclose(file_max_bw);
             end
           endcase

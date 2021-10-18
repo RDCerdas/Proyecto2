@@ -10,22 +10,23 @@ typedef enum {retraso_promedio, reset_ancho_banda, report_csv, append_csv_min_bw
 
 // Definicion de los paquetes
 // Paquete agente-driver, driver-checker
-class trans_bus #(parameter pckg_sz = 16, drvrs = 4);
-    rand int retardo;   
-    rand bit[pckg_sz-9:0] dato [drvrs-1:0];
-  rand bit[7:0] device_dest [drvrs-1:0];
-    rand bit escribir [drvrs-1:0];
-    bit overflow [drvrs-1:0];
+class trans_router #(parameter pckg_sz = 32, num_ntrfs = 4);
+    rand int retardo;  
+    rand bit mode = 0;
+    rand bit[pckg_sz-18:0] dato [num_ntrfs-1:0];
+    rand bit[7:0] device_dest [num_ntrfs-1:0];
+    rand bit escribir [num_ntrfs-1:0];
+    bit overflow [num_ntrfs-1:0];
     rand bit reset;
     int tiempo_lectura;
     int max_retardo;
 
 
   // Constraint del retardo
-    constraint const_retardo {retardo <= max_retardo; retardo> 0;}
+  constraint const_retardo {retardo <= max_retardo; retardo> 0;}
   
   // Constraint de los dispositivos de destino
-  constraint const_device_dest { foreach(device_dest[i]){device_dest[i] inside{[0:drvrs-1], {8{1'b1}}}; device_dest[i]!=i;}}
+  constraint const_device_dest { foreach(device_dest[i]){device_dest[i] inside{[0:num_ntrfs-1], {8{1'b1}}}; device_dest[i]!=i;}}
 
   // Probabilidad de reset
   constraint reset_prop {reset dist{0:=80, 1:=20};}
@@ -35,7 +36,7 @@ class trans_bus #(parameter pckg_sz = 16, drvrs = 4);
 
   function new(int ret = 0, bit rst = 0, int max_retardo = 5);
       this.retardo = ret;
-      for(int i = 0; i<drvrs; i++) begin
+      for(int i = 0; i<num_ntrfs; i++) begin
         this.overflow[i] = 0;
       end
       this.reset = rst;
@@ -51,7 +52,7 @@ class trans_bus #(parameter pckg_sz = 16, drvrs = 4);
 
     function clean();
       this.retardo = 0;
-      for(int i = 0; i<drvrs; i++) begin
+      for(int i = 0; i<num_ntrfs; i++) begin
           this.dato[i] = 0; 
           this.escribir[i] = 0;
           this.overflow[i] = 0;
@@ -68,25 +69,27 @@ endclass
 
 
 // Interfaz para conectar con el bus
-interface bus_if #(parameter drvrs = 4, pckg_sz = 16, bits = 0) (input clk);
+interface router_if #(parameter pckg_sz = 32, num_ntrfs = 4) (input clk);
     logic reset;
-    logic pndng[bits-1:0][drvrs-1:0];
-    logic push[bits-1:0][drvrs-1:0];
-    logic pop[bits-1:0][drvrs-1:0];
-  logic [pckg_sz-1:0] D_pop [bits-1:0][drvrs-1:0];
-  logic [pckg_sz-1:0] D_push [bits-1:0][drvrs-1:0];
+    logic pndng[bits-1:0][num_ntrfs-1:0];
+    logic pndng_i_in[num_ntrfs-1:0];
+    logic pop[num_ntrfs-1:0];
+    logic popin[num_ntrfs-1:0];
+    logic pndng[num_ntrfs-1:0];
+    logic [pck_sz-1:0] data_out[num_ntrfs-1:0];
+    logic [pck_sz-1:0] data_out_i_in[num_ntrfs-1:0];
 endinterface //bus_if 
 
 
 
 // Paquete monitor-checker
-class monitor_checker #(parameter pckg_sz = 16, drvrs = 4);
-    bit [pckg_sz-1:0] dato [drvrs-1:0];
-    bit valid [drvrs-1:0];
+class monitor_checker #(parameter pckg_sz = 32, num_ntrfs = 4);
+    bit [pckg_sz-1:0] dato [num_ntrfs-1:0];
+    bit valid [num_ntrfs-1:0];
     int tiempo_escritura;
 
     function new();
-        for(int i = 0; i<drvrs; i++) begin
+        for(int i = 0; i<num_ntrfs; i++) begin
           this.dato[i] = 0; 
           this.valid[i] = 0;
         end
@@ -100,7 +103,7 @@ class monitor_checker #(parameter pckg_sz = 16, drvrs = 4);
 endclass
 
 // Definicion del paquete entre checker y scoreboard
-class checker_scoreboard #(parameter pckg_sz = 16, drvrs = 4);
+class checker_scoreboard #(parameter pckg_sz = 32, num_ntrfs = 4);
     int tiempo_escritura;
     int tiempo_lectura;
     int latencia;
@@ -140,12 +143,12 @@ class checker_scoreboard #(parameter pckg_sz = 16, drvrs = 4);
     endfunction
 endclass
 
-class test_agent #(parameter pckg_sz = 16, drvrs = 4);
+class test_agent #(parameter pckg_sz = 32, num_ntrfs = 4);
     tipo_sec  tipo_secuencia;
-  bit [pckg_sz-9:0] spec_dato [drvrs-1:0];
+  bit [pckg_sz-9:0] spec_dato [num_ntrfs-1:0];
     int retardo;
-    bit spec_escribir [drvrs-1:0];
-    bit [7:0] spec_device_dest [drvrs-1:0];
+    bit spec_escribir [num_ntrfs-1:0];
+    bit [7:0] spec_device_dest [num_ntrfs-1:0];
     int max_retardo;
     int num_transacciones;
     bit reset;
@@ -179,19 +182,19 @@ endclass
 // Definicion de las mailboxes
 
 // Mailbox entre agente y driver
-typedef mailbox #(trans_bus #(.pckg_sz(pckg_sz), .drvrs(drvrs))) agent_driver_mbx;
+typedef mailbox #(trans_bus #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs))) agent_driver_mbx;
 
 // Mailbox entre driver y checker
-typedef mailbox #(trans_bus #(.pckg_sz(pckg_sz), .drvrs(drvrs))) driver_checker_mbx;
+typedef mailbox #(trans_bus #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs))) driver_checker_mbx;
 
 // Mailbox entre monitor y checker
-typedef mailbox #(monitor_checker #(.pckg_sz(pckg_sz), .drvrs(drvrs))) monitor_checker_mbx;
+typedef mailbox #(monitor_checker #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs))) monitor_checker_mbx;
 
 // Mailbow entre checker y scoreboard
-typedef mailbox #(checker_scoreboard #(.pckg_sz(pckg_sz), .drvrs(drvrs))) checker_scoreboard_mbx;
+typedef mailbox #(checker_scoreboard #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs))) checker_scoreboard_mbx;
 
 // Mailbox entre agente y test
-typedef mailbox #(test_agent #(.pckg_sz(pckg_sz), .drvrs(drvrs))) test_agent_mbx;
+typedef mailbox #(test_agent #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs))) test_agent_mbx;
 
 // Mailbox entre test y scoreboard
 typedef mailbox #(sb_transaction) test_sb_mbx;
