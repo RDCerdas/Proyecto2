@@ -32,7 +32,7 @@ module test_bench;
         .clk(_if.clk),
         .reset(_if.reset),
         .data_out_i_in(_if.data_out_i_in),
-        .push(pndng_i_in.pndng_i_in),
+        .pndng_i_in(_if.pndng_i_in),
         .pop(_if.pop),
         .popin(_if.popin),
         .pndng(_if.pndng),
