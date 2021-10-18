@@ -7,7 +7,7 @@ class base_test #(parameter num_ntrfs = 4, pckg_sz = 32, fifo_depth = 16);
     
     virtual router_if #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz)) _if;
 
-    ambiente #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz), .bits(bits), .fifo_depth(fifo_depth)) ambiente_inst;
+    ambiente #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz), .fifo_depth(fifo_depth)) ambiente_inst;
 
     function new();
         test_agent_mbx_inst = new();

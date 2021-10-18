@@ -1,12 +1,12 @@
-class ambiente #(parameter drvrs = 4, pckg_sz = 16, bits = 0, fifo_depth = 16);
+class ambiente #(parameter num_ntrfs = 4, pckg_sz = 32, fifo_depth = 16);
      virtual router_if #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz)) _if;
 
      // Instanciación de los dispositivos
-     driver #(.drvrs(drvrs), .pckg_sz(pckg_sz), .bits(bits), .fifo_depth(fifo_depth)) driver_inst;
-     agent #(.drvrs(drvrs), .pckg_sz(pckg_sz)) agent_inst;
-     monitor #(.drvrs(drvrs), .pckg_sz(pckg_sz), .bits(bits), .fifo_depth(fifo_depth)) monitor_inst;
-     checkers #(.drvrs(drvrs), .pckg_sz(pckg_sz)) checker_inst;
-  	 score_board #(.pckg_sz(pckg_sz), .drvrs(drvrs)) score_board_inst;
+     driver #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz), .fifo_depth(fifo_depth)) driver_inst;
+     agent #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz)) agent_inst;
+     monitor #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz), .fifo_depth(fifo_depth)) monitor_inst;
+     checkers #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz)) checker_inst;
+  	 score_board #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs)) score_board_inst;
      // Instanciación de los mailbox
      agent_driver_mbx agent_driver_mbx_inst;
      driver_checker_mbx driver_checker_mbx_inst;
