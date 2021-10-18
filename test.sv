@@ -5,7 +5,7 @@ class base_test #(parameter num_ntrfs = 4, pckg_sz = 32, fifo_depth = 16);
     parameter max_retardo = 7;
     test_agent #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs)) instruccion;
     
-    virtual bus_if #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz), .bits(bits)) _if;
+    virtual router_if #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz)) _if;
 
     ambiente #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz), .bits(bits), .fifo_depth(fifo_depth)) ambiente_inst;
 

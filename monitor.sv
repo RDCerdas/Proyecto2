@@ -1,5 +1,5 @@
 class monitor#(parameter num_ntrfs = 4, pckg_sz = 16, bits = 0, fifo_depth = 16);
-    virtual bus_if #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz), .bits(bits)) vif;
+    virtual router_if #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz)) vif;
     monitor_checker_mbx i_monitor_checker_mbx;
     bit push [num_ntrfs];                       // push de cada canal
     bit [pckg_sz-1:0] D_push [num_ntrfs];       // Valor de cada dato

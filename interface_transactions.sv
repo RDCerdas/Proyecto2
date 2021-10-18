@@ -77,7 +77,7 @@ interface router_if #(parameter pckg_sz = 32, num_ntrfs = 4) (input clk);
     logic popin[num_ntrfs-1:0];
     logic [pckg_sz-1:0] data_out[num_ntrfs-1:0];
     logic [pckg_sz-1:0] data_out_i_in[num_ntrfs-1:0];
-endinterface //bus_if 
+endinterface //router_if 
 
 
 

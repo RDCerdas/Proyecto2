@@ -71,7 +71,7 @@ endclass //driver_fifo
 
 // Driver
 class driver #(parameter num_ntrfs = 4, pckg_sz = 16, fifo_depth = 16);
-    virtual bus_if #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz)) vif;
+    virtual router_if #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz)) vif;
     driver_fifo #(.pckg_sz(pckg_sz), .fifo_depth(fifo_depth)) drivers_fifo  [num_ntrfs];
     agent_driver_mbx i_agent_driver_mbx;
     driver_checker_mbx i_driver_checker_mbx;
