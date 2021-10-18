@@ -15,7 +15,7 @@ class arreglo #(parameter pckg_sz = 16); //se agrega una clase de los parametros
 endclass 
 
 class checkers #(parameter num_ntrfs = 4,  pckg_sz = 32);
-  trans_bus #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs)) transaction_driver;
+  trans_router #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs)) transaction_driver;
   monitor_checker #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs)) transaction_monitor;
   checker_scoreboard #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs)) to_sb;
   monitor_checker_mbx i_monitor_checker_mbx;

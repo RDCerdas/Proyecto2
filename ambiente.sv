@@ -1,5 +1,5 @@
 class ambiente #(parameter drvrs = 4, pckg_sz = 16, bits = 0, fifo_depth = 16);
-     virtual bus_if #(.drvrs(drvrs), .pckg_sz(pckg_sz), .bits(bits)) _if;
+     virtual bus_router #(.drvrs(drvrs), .pckg_sz(pckg_sz)) _if;
 
      // Instanciación de los dispositivos
      driver #(.drvrs(drvrs), .pckg_sz(pckg_sz), .bits(bits), .fifo_depth(fifo_depth)) driver_inst;

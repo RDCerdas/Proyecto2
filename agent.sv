@@ -4,7 +4,7 @@ class agent #(parameter pckg_sz = 32, num_ntrfs = 4);
   int num_transacciones;                 // Número de transacciones para las funciones del agente
   int max_retardo; 
   test_agent #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs)) instruccion;      // para guardar la última instruccion leída
-  trans_bus #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs)) transaccion;
+  trans_router #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs)) transaccion;
    
   function new();
   endfunction

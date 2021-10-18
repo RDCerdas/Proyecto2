@@ -71,13 +71,12 @@ endclass
 // Interfaz para conectar con el bus
 interface router_if #(parameter pckg_sz = 32, num_ntrfs = 4) (input clk);
     logic reset;
-    logic pndng[bits-1:0][num_ntrfs-1:0];
+    logic pndng[num_ntrfs-1:0];
     logic pndng_i_in[num_ntrfs-1:0];
     logic pop[num_ntrfs-1:0];
     logic popin[num_ntrfs-1:0];
-    logic pndng[num_ntrfs-1:0];
-    logic [pck_sz-1:0] data_out[num_ntrfs-1:0];
-    logic [pck_sz-1:0] data_out_i_in[num_ntrfs-1:0];
+    logic [pckg_sz-1:0] data_out[num_ntrfs-1:0];
+    logic [pckg_sz-1:0] data_out_i_in[num_ntrfs-1:0];
 endinterface //bus_if 
 
 
@@ -182,10 +181,10 @@ endclass
 // Definicion de las mailboxes
 
 // Mailbox entre agente y driver
-typedef mailbox #(trans_bus #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs))) agent_driver_mbx;
+typedef mailbox #(trans_router #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs))) agent_driver_mbx;
 
 // Mailbox entre driver y checker
-typedef mailbox #(trans_bus #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs))) driver_checker_mbx;
+typedef mailbox #(trans_router #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs))) driver_checker_mbx;
 
 // Mailbox entre monitor y checker
 typedef mailbox #(monitor_checker #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs))) monitor_checker_mbx;

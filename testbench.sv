@@ -21,15 +21,14 @@
 module test_bench;
     reg clk;
    
-    parameter bits = 1;
     parameter broadcast = {8{1'b1}};
 
-    test #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz), .bits(bits), .fifo_depth(fifo_depth)) t0;
+    test1 #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz), .fifo_depth(fifo_depth)) t0;
     router_if #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz)) _if(.clk(clk));
 
     always #5 clk = ~clk;
         
-    router_bus_gnrtr #(.bits(bits), .num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz), .broadcast(broadcast)) uut(
+    router_bus_gnrtr #(.num_ntrfs(num_ntrfs), .pck_sz(pckg_sz), .broadcast(broadcast)) uut(
         .clk(_if.clk),
         .reset(_if.reset),
         .data_out_i_in(_if.data_out_i_in),

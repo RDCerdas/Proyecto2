@@ -26,10 +26,10 @@ class base_test #(parameter num_ntrfs = 4, pckg_sz = 32, fifo_depth = 16);
         join_none
     endtask
 
-endclass //test 
+endclass //base_test
 
 
-class test1 #(parameter num_ntrfs = 4, pckg_sz = 32, fifo_depth = 16) extends test_base(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz), .fifo_depth(fifo_depth));
+class test1 #(parameter num_ntrfs = 4, pckg_sz = 32, fifo_depth = 16) extends base_test #(4, 32, 16);
 
     task run;
         super.run();
