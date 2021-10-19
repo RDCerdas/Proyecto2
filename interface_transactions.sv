@@ -12,7 +12,7 @@ typedef enum {retraso_promedio, reset_ancho_banda, report_csv, append_csv_min_bw
 // Paquete agente-driver, driver-checker
 class trans_router #(parameter pckg_sz = 32, num_ntrfs = 4);
     rand int retardo;  
-    rand bit mode = 0;
+    rand bit modo [num_ntrfs-1:0] = '{default:0};
     rand bit[pckg_sz-18:0] dato [num_ntrfs-1:0];
     rand bit[7:0] device_dest [num_ntrfs-1:0];
     rand bit escribir [num_ntrfs-1:0];

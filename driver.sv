@@ -124,7 +124,7 @@ class driver #(parameter num_ntrfs = 4, pckg_sz = 16, fifo_depth = 16);
         valid_transaction = 0;
         // Actualización de todos los fifos
         foreach (drivers_fifo[i]) begin
-          drivers_fifo[i].popin = vif.pop[i];
+          drivers_fifo[i].pop = vif.pop[i];
           drivers_fifo[i].rst = vif.reset;
           this.dato_temp[i] = vif.data_out_i_in[i];
           drivers_fifo[i].update();

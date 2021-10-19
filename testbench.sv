@@ -1,7 +1,7 @@
 `timescale 1ns/1ps
 
 `ifndef SCRIPT
-    parameter pckg_sz = 16;
+    parameter pckg_sz = 32;
     parameter num_ntrfs = 4;
     parameter fifo_depth = 16;
 `endif
