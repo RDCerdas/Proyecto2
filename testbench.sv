@@ -28,7 +28,7 @@ module test_bench;
 
     always #5 clk = ~clk;
         
-    router_bus_gnrtr #(.num_ntrfs(num_ntrfs), .pck_sz(pckg_sz), .broadcast(broadcast)) uut(
+    router_bus_gnrtr #(.num_ntrfs(num_ntrfs), .pck_sz(pckg_sz), .broadcast(broadcast), .fifo_depth(fifo_depth)) uut(
         .clk(_if.clk),
         .reset(_if.reset),
         .data_out_i_in(_if.data_out_i_in),
@@ -44,7 +44,7 @@ module test_bench;
         t0 = new();
         t0._if = _if;
       	t0.ambiente_inst.driver_inst.vif = _if;
-        t0.ambiente_inst.monitor_inst.vif = _if;
+        //t0.ambiente_inst.monitor_inst.vif = _if;
         fork
             t0.run();
         join_none

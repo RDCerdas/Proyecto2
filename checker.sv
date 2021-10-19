@@ -123,7 +123,7 @@ class checkers #(parameter num_ntrfs = 4,  pckg_sz = 32);
 
     foreach (cola[a]) begin
 	    if(cola[a].tiempo_lectura+timeout < $time) begin
-        cola[a].print("Checker: Error timeout de dato");
+        //cola[a].print("Checker: Error timeout de dato");
         //$finish(1);
 end
     end

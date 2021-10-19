@@ -124,7 +124,7 @@ class driver #(parameter num_ntrfs = 4, pckg_sz = 16, fifo_depth = 16);
         valid_transaction = 0;
         // Actualización de todos los fifos
         foreach (drivers_fifo[i]) begin
-          drivers_fifo[i].pop = vif.pop[i];
+          drivers_fifo[i].pop = vif.popin[i];
           drivers_fifo[i].rst = vif.reset;
           this.dato_temp[i] = vif.data_out_i_in[i];
           drivers_fifo[i].update();
@@ -135,7 +135,7 @@ class driver #(parameter num_ntrfs = 4, pckg_sz = 16, fifo_depth = 16);
         // Si hay un pop en 1 se genera transacción
         foreach (drivers_fifo[i]) begin 
           // Si hay algún pop
-          if (vif.pop[i]) 
+          if (vif.popin[i]) 
             valid_transaction = 1;
           // Detector de flancos
           // En caso de detectar flanco negativo en reset se crea transacción
@@ -152,8 +152,7 @@ class driver #(parameter num_ntrfs = 4, pckg_sz = 16, fifo_depth = 16);
           // Se genera una transacción con la información de cada canal
           foreach (drivers_fifo[i]) begin
             transaction_checker.dato[i] = this.dato_temp[i][pckg_sz-9:0];
-            transaction_checker.device_dest[i] = this.dato_temp[i][pckg_sz-1:pckg_sz-8];
-            transaction_checker.escribir[i] = this.vif.pop[i];
+            transaction_checker.escribir[i] = this.vif.popin[i];
           end
             transaction_checker.tiempo_lectura = $time;
             transaction_checker.reset = reset_temp;
