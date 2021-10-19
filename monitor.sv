@@ -1,4 +1,3 @@
-/*
 class monitor#(parameter num_ntrfs = 4, pckg_sz = 16, fifo_depth = 16);
     virtual router_if #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz)) vif;
     monitor_checker_mbx i_monitor_checker_mbx;
@@ -22,7 +21,6 @@ class monitor#(parameter num_ntrfs = 4, pckg_sz = 16, fifo_depth = 16);
             foreach(this.push[i]) begin
                 this.push[i] = vif.pndng[i];
                 this.D_push[i] = vif.data_out[i];
-		vif.pop[i] = 0;
             end
 
             // Si hay un push se crea transacción
@@ -47,4 +45,3 @@ class monitor#(parameter num_ntrfs = 4, pckg_sz = 16, fifo_depth = 16);
 
     endtask //runs 
 endclass//monitor
-*/
