@@ -48,7 +48,7 @@ class checkers #(parameter num_ntrfs = 4,  pckg_sz = 32);
            Dato=transaction_monitor.dato[i];
            tamano=0;
            foreach (cola[a]) begin
-		  $display("Dato = %h Cola = %h", Dato, cola[a].Dato);
+		  //$display("Dato = %h Cola = %h", Dato, cola[a].Dato);
              if (Dato==cola[a].Dato) begin //si el dato recibido por el monitor es igual al que envio el checker se realiza la transaccion al scoreboard
 		           to_sb = new();
            	   latencia = transaction_monitor.tiempo_escritura - cola[a].tiempo_lectura;
@@ -69,7 +69,7 @@ class checkers #(parameter num_ntrfs = 4,  pckg_sz = 32);
              end
            end
           if (tamano==0) begin//si el dato no se encontró se finaliza el test
-           	 transaction_monitor.print("Checker: El dato recibido por el monitor no fue enviado por el driver");
+           	 //transaction_monitor.print("Checker: El dato recibido por el monitor no fue enviado por el driver");
          	   //$finish(1);
            end
    	end

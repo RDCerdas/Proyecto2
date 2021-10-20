@@ -36,7 +36,7 @@ class monitor#(parameter num_ntrfs = 4, pckg_sz = 16, fifo_depth = 16);
                     transaction.dato[i] = this.D_push[i];
                 end
                 transaction.tiempo_escritura = $time();
-                transaction.print("Monitor: Transaccion enviada");
+                //transaction.print("Monitor: Transaccion enviada");
                 i_monitor_checker_mbx.put(transaction);
             end
 

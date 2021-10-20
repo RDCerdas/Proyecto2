@@ -10,7 +10,7 @@ typedef enum {retraso_promedio, reset_ancho_banda, report_csv, append_csv_min_bw
 
 // Definicion de los paquetes
 // Paquete agente-driver, driver-checker
-class trans_router #(parameter pckg_sz = 32, num_ntrfs = 4);
+class trans_router #(parameter pckg_sz = 40, num_ntrfs = 4);
     rand int retardo;  
     rand bit modo [num_ntrfs-1:0] = '{default:0};
     rand bit[pckg_sz-18:0] dato [num_ntrfs-1:0];
@@ -69,7 +69,7 @@ endclass
 
 
 // Interfaz para conectar con el bus
-interface router_if #(parameter pckg_sz = 32, num_ntrfs = 4) (input clk);
+interface router_if #(parameter pckg_sz = 40, num_ntrfs = 4) (input clk);
     logic reset;
     logic pndng[num_ntrfs-1:0];
     logic pndng_i_in[num_ntrfs-1:0];
@@ -82,7 +82,7 @@ endinterface //router_if
 
 
 // Paquete monitor-checker
-class monitor_checker #(parameter pckg_sz = 32, num_ntrfs = 4);
+class monitor_checker #(parameter pckg_sz = 40, num_ntrfs = 4);
     bit [pckg_sz-1:0] dato [num_ntrfs-1:0];
     bit valid [num_ntrfs-1:0];
     int tiempo_escritura;
@@ -102,7 +102,7 @@ class monitor_checker #(parameter pckg_sz = 32, num_ntrfs = 4);
 endclass
 
 // Definicion del paquete entre checker y scoreboard
-class checker_scoreboard #(parameter pckg_sz = 32, num_ntrfs = 4);
+class checker_scoreboard #(parameter pckg_sz = 40, num_ntrfs = 4);
     int tiempo_escritura;
     int tiempo_lectura;
     int latencia;
@@ -142,7 +142,7 @@ class checker_scoreboard #(parameter pckg_sz = 32, num_ntrfs = 4);
     endfunction
 endclass
 
-class test_agent #(parameter pckg_sz = 32, num_ntrfs = 4);
+class test_agent #(parameter pckg_sz = 40, num_ntrfs = 4);
     tipo_sec  tipo_secuencia;
   bit [pckg_sz-9:0] spec_dato [num_ntrfs-1:0];
     int retardo;

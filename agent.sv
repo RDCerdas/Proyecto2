@@ -1,4 +1,4 @@
-class agent #(parameter pckg_sz = 32, num_ntrfs = 4);
+class agent #(parameter pckg_sz = 40, num_ntrfs = 4);
   agent_driver_mbx i_agent_driver_mbx;           // Mailbox del agente al driver
   test_agent_mbx i_test_agent_mbx;
   int num_transacciones;                 // Número de transacciones para las funciones del agente

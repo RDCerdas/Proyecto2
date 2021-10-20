@@ -1,9 +1,11 @@
 `timescale 1ns/1ps
 
 `ifndef SCRIPT
-    parameter pckg_sz = 32;
+    parameter pckg_sz = 40;
     parameter num_ntrfs = 4;
     parameter fifo_depth = 16;
+    parameter ROWS = 4;
+    parameter COLUMS = 4;
 `endif
 
 `include "Router_library.sv"
@@ -28,7 +30,7 @@ module test_bench;
 
     always #5 clk = ~clk;
         
-    router_bus_gnrtr #(.num_ntrfs(num_ntrfs), .pck_sz(pckg_sz), .broadcast(broadcast), .fifo_depth(fifo_depth)) uut(
+    mesh_gnrtr #(.ROWS(num_ntrfs), .COLUMS(COLUMS), .pckg_sz(pckg_sz), .broadcast(broadcast), .fifo_depth(fifo_depth)) uut(
         .clk(_if.clk),
         .reset(_if.reset),
         .data_out_i_in(_if.data_out_i_in),

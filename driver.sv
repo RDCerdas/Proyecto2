@@ -1,5 +1,5 @@
 // Clase para emular los diferentes fifos de cada dispositivo
-class driver_fifo #(parameter pckg_sz = 16, fifo_depth = 16);
+class driver_fifo #(parameter pckg_sz = 40, fifo_depth = 16);
     bit pop;
     bit pndng;
     bit overflow;
@@ -70,7 +70,7 @@ endclass //driver_fifo
 
 
 // Driver
-class driver #(parameter num_ntrfs = 4, pckg_sz = 16, fifo_depth = 16);
+class driver #(parameter num_ntrfs = 4, pckg_sz = 40, fifo_depth = 16);
     virtual router_if #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz)) vif;
     driver_fifo #(.pckg_sz(pckg_sz), .fifo_depth(fifo_depth)) drivers_fifo  [num_ntrfs];
     agent_driver_mbx i_agent_driver_mbx;
