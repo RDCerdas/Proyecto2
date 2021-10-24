@@ -41,9 +41,9 @@ class test1 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(40, 4)
         instruccion.reset = 0;
         for (int i=0; i<16; ++i) begin
             if(i==15)
-                enviar_dato_especifico(i, i, 0);
+                instruccion.enviar_dato_especifico(i, i, 0);
             else begin
-                enviar_dato_especifico(i, i, i+1);
+                instruccion.enviar_dato_especifico(i, i, i+1);
             end
         end
         test_agent_mbx_inst.put(instruccion);
