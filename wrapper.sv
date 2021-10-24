@@ -51,5 +51,8 @@ module wrapper #(parameter pckg_sz = 40, parameter fifo_depth = 4)(mesh_if _if);
         end
     endgenerate
 
+    assign _if.w_overflow = w_overflow;
+    assign _if.w_dato_overflow = w_data;
+
 
 endmodule
