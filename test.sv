@@ -36,9 +36,16 @@ class test1 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(40, 4)
         // Definición de las partes de la prueba
         // Primera sección pruebas aleatorias y de caso de esquina
         instruccion = new();
-      	instruccion.num_transacciones = 5;
-      	instruccion.max_retardo = 15;
-        instruccion.tipo_secuencia = sec_trans_aleatorias;
+      	instruccion.retardo = 20;
+        instruccion.tipo_secuencia = trans_especifica;
+        instruccion.reset = 0;
+        for (int i=0; i<16; ++i) begin
+            if(i==15)
+                enviar_dato_especifico(i, i, 0);
+            else begin
+                enviar_dato_especifico(i, i, i+1);
+            end
+        end
         test_agent_mbx_inst.put(instruccion);
         $display("[%g]  Test: Enviada primera instruccion al agente transacciones_aleatorias",$time);
 
