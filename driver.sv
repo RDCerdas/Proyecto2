@@ -88,19 +88,19 @@ class driver #(parameter pckg_sz = 40, fifo_depth = 4);
 
       // Colocando rows y colummns
       if(destino <= 3) begin
-        pkg[pckg_sz-9:pckg_sz-12] = 4-destino;
-        pkg[pckg_sz-13:pckg_sz-16] = 5;
-      end else if (destino <= 7) begin
-        pkg[pckg_sz-9:pckg_sz-12] = 5;
-        pkg[pckg_sz-13:pckg_sz-16] = 8-destino;
-      end else if (destino <= 11) begin
-        pkg[pckg_sz-9:pckg_sz-12] = 12-destino;
-        pkg[pckg_sz-13:pckg_sz-16] = 0;
-      end else if (destino <= 15) begin
         pkg[pckg_sz-9:pckg_sz-12] = 0;
-        pkg[pckg_sz-13:pckg_sz-16] = 16-destino;        
+        pkg[pckg_sz-13:pckg_sz-16] = destino+1;
+      end else if (destino <= 7) begin
+        pkg[pckg_sz-9:pckg_sz-12] = destino-3;
+        pkg[pckg_sz-13:pckg_sz-16] = 0;
+      end else if (destino <= 11) begin
+        pkg[pckg_sz-9:pckg_sz-12] = 5;
+        pkg[pckg_sz-13:pckg_sz-16] = destino-7;
+      end else if (destino <= 15) begin
+        pkg[pckg_sz-9:pckg_sz-12] = destino-11;
+        pkg[pckg_sz-13:pckg_sz-16] = 5;        
       end else if (destino == {8{1'b1}}) begin
-	pkg[pckg_sz-9:pckg_sz-16] = destino;
+      	pkg[pckg_sz-9:pckg_sz-16] = destino;
       end
       
       pkg[pckg_sz-17] = mode;
