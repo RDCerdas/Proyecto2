@@ -33,21 +33,19 @@ module wrapper #(parameter pckg_sz = 40, parameter fifo_depth = 4)(mesh_if _if);
     wire [pckg_sz-1:0] w_data [(ROWS*COLUMS*4)-1:0];
 
     generate
-        conection_counter = 0;
         for(rw = 1; rw <= ROWS; rw++) begin: _rw_wp_
-            for (clm = 1; clm<COLUMS; ++clm) begin: _clm_wp_
+            for (clm = 1; clm<=COLUMS; ++clm) begin: _clm_wp_
                 for (nu = 0; nu<4; ++nu) begin: _nu_wp_
-                    assign w_count[conection_counter] = uut._rw_[rw]._clm_[clm].rtr._nu_[nu].rtr_ntrfs.fifo_out.count;
-                    assign w_push[conection_counter] = uut._rw_[rw]._clm_[clm].rtr._nu_[nu].rtr_ntrfs.fifo_out.push;
-                    assign w_data[conection_counter] = uut._rw_[rw]._clm_[clm].rtr._nu_[nu].rtr_ntrfs.fifo_out.Dout;
+                    assign w_count[nu+4*(clm-1)+16*(rw-1)] = uut._rw_[rw]._clm_[clm].rtr._nu_[nu].rtr_ntrfs_.fifo_out.count;
+                    assign w_push[nu+4*(clm-1)+16*(rw-1)] = uut._rw_[rw]._clm_[clm].rtr._nu_[nu].rtr_ntrfs_.fifo_out.push;
+                    assign w_data[nu+4*(clm-1)+16*(rw-1)] = uut._rw_[rw]._clm_[clm].rtr._nu_[nu].rtr_ntrfs_.fifo_out.Dout;
 
-                    always@(posedge w_push[conection_counter])begin
-                        if(w_count[conection_counter] == fifo_depth)begin
-                            w_overflow[conection_counter] <= 1'b1;
+                    always@(posedge w_push[nu+4*(clm-1)+16*(rw-1)]) begin
+                        if(w_count[nu+4*(clm-1)+16*(rw-1)] == fifo_depth)begin
+                            w_overflow[nu+4*(clm-1)+16*(rw-1)] <= 1'b1;
                         end 
                     end
 
-                    conection_counter++;
                 end
             end
         end

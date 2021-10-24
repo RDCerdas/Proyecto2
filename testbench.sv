@@ -1,5 +1,7 @@
 `timescale 1ns/1ps
 
+`define DEBUG 1
+
 parameter pckg_sz = 40;
 parameter fifo_depth = 4;
 

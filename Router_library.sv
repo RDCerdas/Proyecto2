@@ -1,4 +1,3 @@
-`define DEBUG 1
 
 `ifndef FIFOS
    `include "fifo.sv"
