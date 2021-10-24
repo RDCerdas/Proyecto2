@@ -100,7 +100,7 @@ class driver #(parameter pckg_sz = 40, fifo_depth = 4);
         pkg[pckg_sz-9:pckg_sz-12] = destino-11;
         pkg[pckg_sz-13:pckg_sz-16] = 5;        
       end else if (destino == {8{1'b1}}) begin
-	pkg[pckg_sz-9:pckg_sz-16] = destino;
+      	pkg[pckg_sz-9:pckg_sz-16] = destino;
       end
       
       pkg[pckg_sz-17] = mode;
