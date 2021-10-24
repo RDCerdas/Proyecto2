@@ -79,7 +79,7 @@ interface mesh_if #(parameter pckg_sz = 40) (input clk);
     logic [pckg_sz-1:0] data_out_i_in[16-1:0];
 
     logic w_overflow[64];
-    logic [pckg_sz-1] w_dato_overflow[64];
+    logic [pckg_sz-1] w_data_overflow[64];
 endinterface //mesh_if 
 
 
@@ -89,17 +89,22 @@ class monitor_checker #(parameter pckg_sz = 40);
     bit [pckg_sz-1:0] dato [16-1:0];
     bit valid [16-1:0];
     int tiempo_escritura;
+    bit overflow[64];
+    bit data_overflow[64];
 
     function new();
         for(int i = 0; i<16; i++) begin
           this.dato[i] = 0; 
           this.valid[i] = 0;
         end
+          this.overflow[i]=0;
+          this.data_overflow[i]=0;
+        end
         this.tiempo_escritura = 0;
     endfunction 
 	
 	function void print(string tag);
-      $display("[%g] %s Tiempo=%g \nDato=%p \nValido=%p",$time,tag,tiempo_escritura, this.dato, this.valid);
+      $display("[%g] %s Tiempo=%g \nDato=%p \nValido=%p \nOverflow=%p \nData_Overflow=%p",$time,tag,tiempo_escritura, this.dato, this.valid this.overflow, this.data_overflow);
       
     endfunction
 endclass
