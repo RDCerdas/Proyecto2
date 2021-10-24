@@ -14,8 +14,6 @@ class base_test #(parameter pckg_sz = 40, fifo_depth = 4);
         test_sb_mbx_inst = new();
         ambiente_inst = new(test_agent_mbx_inst, test_sb_mbx_inst);
         ambiente_inst._if = _if;
-
-
     endfunction //new()
 
     task run();

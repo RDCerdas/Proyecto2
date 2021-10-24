@@ -17,6 +17,7 @@ class trans_router #(parameter pckg_sz = 40);
     rand bit[7:0] device_dest [16-1:0];
     rand bit escribir [16-1:0];
     bit overflow [16-1:0];
+    bit [pckg_sz-1:0] packet [16-1:0];
     rand bit reset;
     int tiempo_lectura;
     int max_retardo;

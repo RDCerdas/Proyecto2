@@ -153,7 +153,10 @@ class driver #(parameter pckg_sz = 40, fifo_depth = 4);
           transaction_checker = new();
           // Se genera una transacción con la información de cada canal
           foreach (drivers_fifo[i]) begin
-            transaction_checker.dato[i] = this.dato_temp[i][pckg_sz-9:0];
+            transaction_checker.dato[i] = this.dato_temp[i][pckg_sz-18:0];
+            transaction_checker.packet[i] = this.dato_temp[i][pckg_sz-1:0];
+            transaction_checker.modo[i] = this.dato_temp[i][pckg_sz-17];
+            transaction_checker.device_dest[i] = this.dato_temp[i][pckg_sz-9:pckg_sz-16];
             transaction_checker.escribir[i] = this.vif.popin[i];
           end
             transaction_checker.tiempo_lectura = $time;
