@@ -32,6 +32,7 @@ class monitor#(parameter pckg_sz = 40, fifo_depth = 4);
                 this.overflow[j] = vif.w_overflow[j];
                 this.data_overflow[j] = vif.w_data_overflow[j];
             end
+	    
             // si hay un overflow se crea la transaccion con el overflow y el dato
             foreach(this.overflow[i]) if(this.overflow[i]) overflowout = 1;
             if (overflowout) begin
@@ -43,7 +44,7 @@ class monitor#(parameter pckg_sz = 40, fifo_depth = 4);
                 end
                 //transaction.print("Monitor: Transaccion enviada");
                 i_monitor_checker_mbx.put(transaction);
-
+	    end
             // Si hay un push se crea transacción
             foreach(this.push[i]) if(this.push[i]) valid = 1;
             // Se genera transacción hacia checker

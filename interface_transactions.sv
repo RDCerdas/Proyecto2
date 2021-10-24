@@ -96,7 +96,6 @@ class monitor_checker #(parameter pckg_sz = 40);
         for(int i = 0; i<16; i++) begin
           this.dato[i] = 0; 
           this.valid[i] = 0;
-        end
           this.overflow[i]=0;
           this.data_overflow[i]=0;
         end
@@ -104,7 +103,7 @@ class monitor_checker #(parameter pckg_sz = 40);
     endfunction 
 	
 	function void print(string tag);
-      $display("[%g] %s Tiempo=%g \nDato=%p \nValido=%p \nOverflow=%p \nData_Overflow=%p",$time,tag,tiempo_escritura, this.dato, this.valid this.overflow, this.data_overflow);
+      $display("[%g] %s Tiempo=%g \nDato=%p \nValido=%p \nOverflow=%p \nData_Overflow=%p",$time,tag,tiempo_escritura, this.dato, this.valid, this.overflow, this.data_overflow);
       
     endfunction
 endclass
