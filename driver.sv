@@ -70,12 +70,12 @@ endclass //driver_fifo
 
 
 // Driver
-class driver #(parameter num_ntrfs = 4, pckg_sz = 40, fifo_depth = 16);
-    virtual router_if #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz)) vif;
-    driver_fifo #(.pckg_sz(pckg_sz), .fifo_depth(fifo_depth)) drivers_fifo  [num_ntrfs];
+class driver #(parameter pckg_sz = 40, fifo_depth = 4);
+    virtual mesh_if #(.pckg_sz(pckg_sz)) vif;
+    driver_fifo #(.pckg_sz(pckg_sz), .fifo_depth(fifo_depth)) drivers_fifo  [16];
     agent_driver_mbx i_agent_driver_mbx;
     driver_checker_mbx i_driver_checker_mbx;
-    bit [pckg_sz-1:0] dato_temp [num_ntrfs-1:0];
+    bit [pckg_sz-1:0] dato_temp [16];
   	int espera;
     int espera_total;
     bit reset_temp;
@@ -147,7 +147,7 @@ class driver #(parameter num_ntrfs = 4, pckg_sz = 40, fifo_depth = 16);
 
         // En caso de que se detecte pop se hace transacción hacia checker 
         if(valid_transaction) begin
-          trans_router #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs)) transaction_checker;
+          trans_router #(.pckg_sz(pckg_sz)) transaction_checker;
           transaction_checker = new();
           // Se genera una transacción con la información de cada canal
           foreach (drivers_fifo[i]) begin
@@ -165,7 +165,7 @@ class driver #(parameter num_ntrfs = 4, pckg_sz = 40, fifo_depth = 16);
         
   // Lógica no bloqueante para para implementar el retraso y recibir instrucciones del agente
 	if(espera >= espera_total) begin
-          trans_router #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs)) transaction; 
+          trans_router #(.pckg_sz(pckg_sz)) transaction; 
           vif.reset = 0;
           espera = 0;
           if (i_agent_driver_mbx.try_get(transaction)) begin
@@ -190,4 +190,4 @@ class driver #(parameter num_ntrfs = 4, pckg_sz = 40, fifo_depth = 16);
 
 
     endtask
-endclass //driver #parameter(parameter num_ntrfs = 4, pckg_sz = 16, bits = 0)
+endclass //driver #parameter(parameter pckg_sz = 16, bits = 0)

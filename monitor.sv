@@ -1,8 +1,8 @@
-class monitor#(parameter num_ntrfs = 4, pckg_sz = 16, fifo_depth = 16);
-    virtual router_if #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz)) vif;
+class monitor#(parameter pckg_sz = 40, fifo_depth = 4);
+    virtual mesh_if #(.pckg_sz(pckg_sz)) vif;
     monitor_checker_mbx i_monitor_checker_mbx;
-    bit push [num_ntrfs];                       // push de cada canal
-    bit [pckg_sz-1:0] D_push [num_ntrfs];       // Valor de cada dato
+    bit push [16];                       // push de cada canal
+    bit [pckg_sz-1:0] D_push [16];       // Valor de cada dato
     bit valid;                              // Variable para controlar generación de transacciones
 
     function new();
@@ -29,7 +29,7 @@ class monitor#(parameter num_ntrfs = 4, pckg_sz = 16, fifo_depth = 16);
             
             // Se genera transacción hacia checker
             if (valid) begin
-                monitor_checker #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs)) transaction;
+                monitor_checker #(.pckg_sz(pckg_sz)) transaction;
                 transaction = new();
                 foreach(this.push[i]) begin
                     transaction.valid[i] = this.push[i];

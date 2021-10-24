@@ -1,10 +1,10 @@
-class agent #(parameter pckg_sz = 40, num_ntrfs = 4);
+class agent #(parameter pckg_sz = 40);
   agent_driver_mbx i_agent_driver_mbx;           // Mailbox del agente al driver
   test_agent_mbx i_test_agent_mbx;
   int num_transacciones;                 // Número de transacciones para las funciones del agente
   int max_retardo; 
-  test_agent #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs)) instruccion;      // para guardar la última instruccion leída
-  trans_router #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs)) transaccion;
+  test_agent #(.pckg_sz(pckg_sz)) instruccion;      // para guardar la última instruccion leída
+  trans_router #(.pckg_sz(pckg_sz)) transaccion;
    
   function new();
   endfunction

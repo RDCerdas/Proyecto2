@@ -1,13 +1,13 @@
-class base_test #(parameter num_ntrfs = 4, pckg_sz = 32, fifo_depth = 16);
+class base_test #(parameter pckg_sz = 40, fifo_depth = 4);
     test_agent_mbx test_agent_mbx_inst;
     test_sb_mbx test_sb_mbx_inst;
     parameter num_transacciones = 25;
     parameter max_retardo = 7;
-    test_agent #(.pckg_sz(pckg_sz), .num_ntrfs(num_ntrfs)) instruccion;
+    test_agent #(.pckg_sz(pckg_sz)) instruccion;
     
-    virtual router_if #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz)) _if;
+    virtual mesh_if #(.pckg_sz(pckg_sz)) _if;
 
-    ambiente #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz), .fifo_depth(fifo_depth)) ambiente_inst;
+    ambiente #(.pckg_sz(pckg_sz), .fifo_depth(fifo_depth)) ambiente_inst;
 
     function new();
         test_agent_mbx_inst = new();
@@ -29,12 +29,11 @@ class base_test #(parameter num_ntrfs = 4, pckg_sz = 32, fifo_depth = 16);
 endclass //base_test
 
 
-class test1 #(parameter num_ntrfs = 4, pckg_sz = 32, fifo_depth = 16) extends base_test #(4, 40, 16);
+class test1 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(40, 4);
 
     task run;
         super.run();
         // Definición de las partes de la prueba
-
         // Primera sección pruebas aleatorias y de caso de esquina
         instruccion = new();
       	instruccion.num_transacciones = 5;

@@ -2,7 +2,6 @@
 
 `ifndef SCRIPT
     parameter pckg_sz = 40;
-    parameter num_ntrfs = 4;
     parameter fifo_depth = 16;
     parameter ROWS = 4;
     parameter COLUMS = 4;
@@ -25,7 +24,7 @@ module test_bench;
    
     parameter broadcast = {8{1'b1}};
 
-    router_if #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz)) _if(.clk(clk));
+    mesh_if #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz)) _if(.clk(clk));
 
     always #5 clk = ~clk;
         
@@ -44,11 +43,13 @@ module test_bench;
 
     genvar i;
 
+    /*
     generate;
         for(int i = 0; i<2; i++) begin
             assign conection = uut.router_bus_gnrtr_clm_[i].clk;
         end
     endgenerate
+    */
 
 
 endmodule

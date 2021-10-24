@@ -1,15 +1,11 @@
 `timescale 1ns/1ps
 
-`ifndef SCRIPT
-    parameter pckg_sz = 40;
-    parameter num_ntrfs = 4;
-    parameter fifo_depth = 16;
-    parameter ROWS = 4;
-    parameter COLUMS = 4;
-`endif
+parameter pckg_sz = 40;
+parameter fifo_depth = 4;
 
-`include "Router_library.sv"
+
 `include "interface_transactions.sv"
+`include "wrapper.sv"
 `include "monitor.sv"
 `include "driver.sv"
 `include "agent.sv"
@@ -25,20 +21,13 @@ module test_bench;
    
     parameter broadcast = {8{1'b1}};
 
-    test1 #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz), .fifo_depth(fifo_depth)) t0;
-    router_if #(.num_ntrfs(num_ntrfs), .pckg_sz(pckg_sz)) _if(.clk(clk));
+    test1 #(.pckg_sz(pckg_sz), .fifo_depth(fifo_depth)) t0;
+    mesh_if #(.pckg_sz(pckg_sz)) _if(.clk(clk));
 
     always #5 clk = ~clk;
         
-    mesh_gnrtr #(.ROWS(num_ntrfs), .COLUMS(COLUMS), .pckg_sz(pckg_sz), .broadcast(broadcast), .fifo_depth(fifo_depth)) uut(
-        .clk(_if.clk),
-        .reset(_if.reset),
-        .data_out_i_in(_if.data_out_i_in),
-        .pndng_i_in(_if.pndng_i_in),
-        .pop(_if.pop),
-        .popin(_if.popin),
-        .pndng(_if.pndng),
-        .data_out(_if.data_out)
+    wrapper #(.pckg_sz(pckg_sz), .fifo_depth(fifo_depth)) uut_wrapper(
+        ._if(_if)
     );
 
     initial begin
