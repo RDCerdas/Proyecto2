@@ -78,8 +78,8 @@ interface mesh_if #(parameter pckg_sz = 40) (input clk);
     logic [pckg_sz-1:0] data_out[16-1:0];
     logic [pckg_sz-1:0] data_out_i_in[16-1:0];
 
-    logic w_overflow[63];
-    logic w_dato_overflow[63];
+    logic w_overflow[64];
+    logic [pckg_sz-1] w_dato_overflow[64];
 endinterface //mesh_if 
 
 

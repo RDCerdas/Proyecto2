@@ -29,7 +29,7 @@ module wrapper #(parameter pckg_sz = 40, parameter fifo_depth = 4)(mesh_if _if);
 
     wire [$clog2(fifo_depth):0] w_count [(ROWS*COLUMS*4)-1:0];
     wire w_push [(ROWS*COLUMS*4)-1:0];
-    reg w_overflow [(ROWS*COLUMS*4)-1:0];
+    reg w_overflow [(ROWS*COLUMS*4)-1:0] = '{default:0};
     wire [pckg_sz-1:0] w_data [(ROWS*COLUMS*4)-1:0];
 
     generate
@@ -44,6 +44,8 @@ module wrapper #(parameter pckg_sz = 40, parameter fifo_depth = 4)(mesh_if _if);
                         if(w_count[nu+4*(clm-1)+16*(rw-1)] == fifo_depth)begin
                             w_overflow[nu+4*(clm-1)+16*(rw-1)] <= 1'b1;
                         end 
+			else
+			    w_overflow[nu+4*(clm-1)+16*(rw-1)] <= 1'b0;
                     end
 
                 end
