@@ -44,11 +44,14 @@ class monitor#(parameter pckg_sz = 40, fifo_depth = 4);
                 end
                 //transaction.print("Monitor: Transaccion enviada");
                 i_monitor_checker_mbx.put(transaction);
-	    end
+            end
             // Si hay un push se crea transacción
-            foreach(this.push[i]) if(this.push[i]) valid = 1;
-            // Se genera transacción hacia checker
+            foreach(this.push[i]) begin
+                if(this.push[i]) valid = 1;
+                if(this.push[i]) vif.pop[i] = 1;
+            end
             if (valid) begin
+                // Se genera transacción hacia checker
                 monitor_checker #(.pckg_sz(pckg_sz)) transaction;
                 transaction = new();
                 foreach(this.push[i]) begin
@@ -60,6 +63,7 @@ class monitor#(parameter pckg_sz = 40, fifo_depth = 4);
                 i_monitor_checker_mbx.put(transaction);
             end        
             valid = 0;
+            overflowout=0;
             @(posedge vif.clk);
         end
 
