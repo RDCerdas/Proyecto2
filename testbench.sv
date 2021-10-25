@@ -47,8 +47,9 @@ module test_bench;
     end
   end
 
+genvar i;
 generate;
-    for (int i=0; i<16; ++i) begin
+    for (i=0; i<16; ++i) begin:_assert_
         Pendings_i: assert property (@(posedge _if.clk) _if.reset |-> ##[0:4] !_if.pndng_i_in[i])
             else $error("Pending not zero after reset");
         Pendings_o: assert property (@(posedge _if.clk) _if.reset |-> ##[0:4] !_if.pndng[i])
