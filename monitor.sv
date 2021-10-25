@@ -50,6 +50,9 @@ class monitor#(parameter pckg_sz = 40, fifo_depth = 4);
                 if(this.push[i]) valid = 1;
                 if(this.push[i]) vif.pop[i] = 1;
             end
+            for (i=0; i<2; i=i++) begin
+                @(posedge clk) ; 
+            end
             if (valid) begin
                 // Se genera transacción hacia checker
                 monitor_checker #(.pckg_sz(pckg_sz)) transaction;
