@@ -47,12 +47,14 @@ module test_bench;
     end
   end
 
-  property reset_pndng;
-      @(posedge _if.clk) _if.reset |-> ##[0:4] !_if.pndng_i_in[0];
-  endproperty
-
-  Pendings: assert property (reset_pndng)
-      else $error("Pending not zero");
+generate;
+    for (int i=0; i<16; ++i) begin
+        Pendings_i: assert property (@(posedge _if.clk) _if.reset |-> ##[0:4] !_if.pndng_i_in[i])
+            else $error("Pending not zero after reset");
+        Pendings_o: assert property (@(posedge _if.clk) _if.reset |-> ##[0:4] !_if.pndng[i])
+            else $error("Pending not zero after reset");   
+    end
+endgenerate
 
 
 endmodule
