@@ -27,7 +27,7 @@ class monitor#(parameter pckg_sz = 40, fifo_depth = 4);
 
         forever begin
             // Actualización de cada valor
-            for (i=0; i<3; i=i++) begin
+            for (j=0; j<3; j=j++) begin
                 foreach(this.pushtemp[i]) begin
                     if (vif.pndng[i] == 1) begin
                         this.pushtemp[i] = vif.pndng[i];
