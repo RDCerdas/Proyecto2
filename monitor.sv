@@ -23,10 +23,15 @@ class monitor#(parameter pckg_sz = 40, fifo_depth = 4);
         forever begin
             // Actualización de cada valor
             foreach(this.push[i]) begin
-                this.push[i] = vif.pndng[i];
-                this.D_push[i] = vif.data_out[i];
-		        vif.pop[i] = 0;
+                always @(:vif.pndng[i]) begin
+                    if (vif.vif.pndng[i] == 1) begin
+                        this.push[i] = vif.pndng[i];
+                        this.D_push[i] = vif.data_out[i];
+		                vif.pop[i] = 0;                
+                    end
+                end
             end
+            
             // se revisa si se da overflows  
             foreach(this.overflow[j]) begin
                 this.overflow[j] = vif.w_overflow[j];
