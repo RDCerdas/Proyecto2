@@ -1,6 +1,5 @@
 `timescale 1ns/1ps
 
-`define DEBUG 1
 
 parameter pckg_sz = 40;
 parameter fifo_depth = 4;
@@ -21,7 +20,7 @@ parameter fifo_depth = 4;
 module test_bench;
     reg clk;
    
-    test1 #(.pckg_sz(pckg_sz), .fifo_depth(fifo_depth)) t0;
+    test1_1 #(.pckg_sz(pckg_sz), .fifo_depth(fifo_depth)) t0;
     mesh_if #(.pckg_sz(pckg_sz)) _if(.clk(clk));
 
     always #5 clk = ~clk;
@@ -49,8 +48,7 @@ module test_bench;
   end
 
   property reset_pndng;
-      @(posedge _if.clk) _if.reset |-> ##[0:4] !_if.pndng;
-      @(posedge _if.clk) _if.reset |-> ##[0:4] !_if.pndng_i_in;
+      @(posedge _if.clk) _if.reset |-> ##[0:4] !_if.pndng_i_in[0];
   endproperty
 
   Pendings: assert property (reset_pndng)

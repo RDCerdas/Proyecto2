@@ -42,7 +42,7 @@ class monitor#(parameter pckg_sz = 40, fifo_depth = 4);
                     transaction.overflow[i] = this.overflow[i];
                     transaction.data_overflow[i] = this.data_overflow[i];
                 end
-                //transaction.print("Monitor: Transaccion enviada");
+                transaction.print("Monitor: Transaccion enviada");
                 i_monitor_checker_mbx.put(transaction);
             end
             // Si hay un push se crea transacción
@@ -59,7 +59,7 @@ class monitor#(parameter pckg_sz = 40, fifo_depth = 4);
                     transaction.dato[i] = this.D_push[i];
                 end
                 transaction.tiempo_escritura = $time();
-                //transaction.print("Monitor: Transaccion enviada");
+                transaction.print("Monitor: Transaccion enviada");
                 i_monitor_checker_mbx.put(transaction);
             end        
             valid = 0;
