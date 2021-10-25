@@ -27,25 +27,18 @@ class base_test #(parameter pckg_sz = 40, fifo_depth = 4);
 endclass //base_test
 
 
-class test1 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg_sz, fifo_depth);
+class test1_1 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg_sz, fifo_depth);
 
     task run;
         super.run();
         // Definición de las partes de la prueba
         // Primera sección pruebas aleatorias y de caso de esquina
         instruccion = new();
-      	instruccion.retardo = 20;
-        instruccion.tipo_secuencia = trans_especifica;
-        instruccion.reset = 0;
-        for (int i=0; i<16; ++i) begin
-            if(i==15)
-                instruccion.enviar_dato_especifico(i, i, 0);
-            else begin
-                instruccion.enviar_dato_especifico(i, i, i+1);
-            end
-        end
+      	instruccion.num_transacciones = 400;
+        instruccion.max_retardo = 20;
+        instruccion.tipo_secuencia = sec_trans_aleatorias;
         test_agent_mbx_inst.put(instruccion);
-        $display("[%g]  Test: Enviada primera instruccion al agente transacciones_aleatorias",$time);
+        $display("[%g]  Test: Enviadas transacciones aleatorias",$time);
 
 
         // Finaliza primer seccion de pruebas
@@ -53,4 +46,166 @@ class test1 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg_s
 	      $finish();
     endtask
 
-endclass //test 
+endclass //test1_1
+
+
+class test1_2 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg_sz, fifo_depth);
+
+    task run;
+        super.run();
+        // Definición de las partes de la prueba
+        // Primera sección pruebas aleatorias y de caso de esquina
+        instruccion = new();
+      	instruccion.num_transacciones = 200;
+        instruccion.max_retardo = 1;
+        instruccion.retardo = 1;
+        instruccion.tipo_secuencia = sec_trans_especificas;
+        instruccion.enviar_dato_especifico(0, 'hA, 0, 15);
+        test_agent_mbx_inst.put(instruccion);
+        $display("[%g]  Test: Enviadas transacciones en un dispositivo",$time);
+
+
+        // Finaliza primer seccion de pruebas
+	    #20000;
+	    $finish();
+    endtask
+
+endclass //test1_2
+
+class test1_3 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg_sz, fifo_depth);
+
+    task run;
+        super.run();
+        // Definición de las partes de la prueba
+        // Primera sección pruebas aleatorias y de caso de esquina
+        instruccion = new();
+      	instruccion.num_transacciones = 400;
+        instruccion.max_retardo = 1;
+        instruccion.tipo_secuencia = sec_escrituras_aleatorias;
+        test_agent_mbx_inst.put(instruccion);
+        $display("[%g]  Test: Enviadas transacciones en todos los dispositivos",$time);
+
+
+        // Finaliza primer seccion de pruebas
+	    #20000;
+	    $finish();
+    endtask
+
+endclass //test1_3
+
+class test2_1 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg_sz, fifo_depth);
+
+    task run;
+        super.run();
+        // Definición de las partes de la prueba
+        // Primera sección pruebas aleatorias y de caso de esquina
+        instruccion = new();
+      	instruccion.num_transacciones = 10;
+        instruccion.retardo = 10;
+        instruccion.tipo_secuencia = sec_trans_especificas;
+        for (int i=0; i<16; ++i) begin
+            // Broadcast en todos los dispositivos
+            // Se alternan los modos de trabajo
+            instruccion.enviar_dato_especifico(i, 'hFF, i%2, 'hff);
+        end
+        
+        test_agent_mbx_inst.put(instruccion);
+        $display("[%g]  Test: Enviadas transacciones en un dispositivo",$time);
+
+        instruccion = new();
+      	instruccion.num_transacciones = 10;
+        instruccion.retardo = 10;
+        instruccion.tipo_secuencia = sec_trans_especificas;
+        for (int i=1; i<16; ++i) begin
+            // Envío de todos los dispositivos hasta cero
+            // Se alternan los modos de trabajo
+            instruccion.enviar_dato_especifico(i, 'hAA, i%2, 0);
+        end
+        
+        test_agent_mbx_inst.put(instruccion);
+        $display("[%g]  Test: Enviadas transacciones en un dispositivo",$time);
+
+
+        instruccion = new();
+      	instruccion.num_transacciones = 10;
+        instruccion.retardo = 10;
+        instruccion.tipo_secuencia = sec_trans_especificas;
+        // Se envía dato desde cero hasta cero
+        instruccion.enviar_dato_especifico(0, 'hBB, 0, 0);
+        
+        test_agent_mbx_inst.put(instruccion);
+        $display("[%g]  Test: Enviadas transacciones en un dispositivo",$time);
+
+        // Se espera a que termina
+        #1000;
+
+        // Intrucción de broadcast anterior con reset
+        instruccion = new();
+      	instruccion.num_transacciones = 10;
+        instruccion.retardo = 10;
+        instruccion.tipo_secuencia = sec_trans_especificas;
+        for (int i=0; i<16; ++i) begin
+            // Broadcast en todos los dispositivos
+            // Se alternan los modos de trabajo
+            instruccion.enviar_dato_especifico(i, 'hFF, i%2, 'hff);
+        end
+        instruccion.reset = 1;
+
+        test_agent_mbx_inst.put(instruccion);
+        $display("[%g]  Test: Enviadas transacciones en un dispositivo",$time);
+
+        // Intrucción de envío de datos simultaneo anterior con reset
+        instruccion = new();
+      	instruccion.num_transacciones = 10;
+        instruccion.retardo = 10;
+        instruccion.tipo_secuencia = sec_trans_especificas;
+        for (int i=1; i<16; ++i) begin
+            // Envío de todos los dispositivos hasta cero
+            // Se alternan los modos de trabajo
+            instruccion.enviar_dato_especifico(i, 'hAA, i%2, 0);
+        end
+        instruccion.reset = 1;
+
+        test_agent_mbx_inst.put(instruccion);
+        $display("[%g]  Test: Enviadas transacciones en un dispositivo",$time);
+
+
+
+
+        // Finaliza primer seccion de pruebas
+	    #20000;
+	    $finish();
+    endtask
+
+endclass //test2_1
+
+class test2_2 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg_sz, fifo_depth);
+
+    task run;
+        super.run();
+        // Definición de las partes de la prueba
+        // Primera sección pruebas aleatorias y de caso de esquina
+        instruccion = new();
+      	instruccion.num_transacciones = 200;
+        instruccion.retardo = 10;
+        instruccion.tipo_secuencia = sec_trans_especificas;
+        for (int i=0; i<4; ++i) begin
+            // Broadcast en todos los dispositivos
+            // Se alternan los modos de trabajo
+            instruccion.enviar_dato_especifico(i, i, 0 , 15);
+        end
+        for (int i=4; i<8; ++i) begin
+            // Broadcast en todos los dispositivos
+            // Se alternan los modos de trabajo
+            instruccion.enviar_dato_especifico(i, i, 1 , 15);
+        end
+        
+        test_agent_mbx_inst.put(instruccion);
+        $display("[%g]  Test: Enviadas transacciones en un dispositivo",$time);
+
+	    #20000;
+	    $finish();
+    endtask
+
+endclass //test2_2
+

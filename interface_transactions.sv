@@ -152,12 +152,13 @@ endclass
 
 class test_agent #(parameter pckg_sz = 40);
     tipo_sec  tipo_secuencia;
-  bit [pckg_sz-9:0] spec_dato [16-1:0];
+    bit [pckg_sz-18:0] spec_dato [16-1:0];
     int retardo;
     bit spec_escribir [16-1:0];
     bit [7:0] spec_device_dest [16-1:0];
     int max_retardo;
-    int num_transacciones;
+    int num_transacciones = 10;
+    bit spec_modo [16-1:0] = '{default:4};
     bit reset;
 
   function new(tipo_sec t_sec = trans_aleatoria, int ret = 0);
@@ -169,7 +170,6 @@ class test_agent #(parameter pckg_sz = 40);
         spec_escribir[i] = 0;
       end
       this.max_retardo = 5;
-      this.num_transacciones = 6;
       this.reset = 0;
 
       

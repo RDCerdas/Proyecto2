@@ -21,8 +21,6 @@ parameter fifo_depth = 4;
 module test_bench;
     reg clk;
    
-    parameter broadcast = {8{1'b1}};
-
     test1 #(.pckg_sz(pckg_sz), .fifo_depth(fifo_depth)) t0;
     mesh_if #(.pckg_sz(pckg_sz)) _if(.clk(clk));
 

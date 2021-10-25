@@ -34,6 +34,7 @@ class agent #(parameter pckg_sz = 40);
               transaccion.dato[i] = instruccion.spec_dato[i];
               transaccion.escribir[i] = instruccion.spec_escribir[i];
               transaccion.device_dest[i] = instruccion.spec_device_dest[i];
+              transaccion.modo[i] = instruccion.spec_modo[i];
             end
             transaccion.retardo = instruccion.retardo;
             transaccion.reset = instruccion.reset;
