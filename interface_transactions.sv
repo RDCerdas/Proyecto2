@@ -176,9 +176,10 @@ class test_agent #(parameter pckg_sz = 40);
     endfunction
 
   // Funcion para escribir desde y hasta canal deseado
-  function void enviar_dato_especifico(int device_salida, bit [pckg_sz-9:0] dato, bit [7:0] device_dest);
+  function void enviar_dato_especifico(int device_salida, bit [pckg_sz-9:0] dato, bit modo, bit [7:0] device_dest);
     this.spec_dato[device_salida] = dato;
     this.spec_escribir[device_salida] = 1;
+    this.spec_modo[device_salida] = modo;
     this.spec_device_dest[device_salida] = device_dest;
   endfunction
 
