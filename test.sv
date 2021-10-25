@@ -27,7 +27,7 @@ class base_test #(parameter pckg_sz = 40, fifo_depth = 4);
 endclass //base_test
 
 
-class test1 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(40, 4);
+class test1 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg_sz, fifo_depth);
 
     task run;
         super.run();
