@@ -44,7 +44,7 @@ class monitor#(parameter pckg_sz = 40, fifo_depth = 4);
             
             // Actualización de cada valor
             foreach(this.push[i]) begin
-                this.push[i] = vif.pndng[i];;
+                this.push[i] = vif.pndng[i];
                 this.D_push[i] = vif.data_out[i];
             end
                 
