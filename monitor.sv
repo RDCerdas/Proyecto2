@@ -51,7 +51,7 @@ class monitor#(parameter pckg_sz = 40, fifo_depth = 4);
             // Si hay un push se crea transacción
             foreach(this.push[i]) begin 
                 if(this.push[i]) valid = 1;
-                vif.pop[i] = 1;
+                if(this.push[i]) vif.pop[i] = 1;
             end
             @(posedge vif.clk);
             foreach(vif.pop[i]) begin
