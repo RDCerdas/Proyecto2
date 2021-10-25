@@ -7,16 +7,11 @@ class monitor#(parameter pckg_sz = 40, fifo_depth = 4);
     bit overflow[64];
     bit [pckg_sz-1] data_overflow[64];
     bit overflowout;
-    bit count;
-        bit pushtemp [16];                       
-    bit [pckg_sz-1:0] D_pushtemp [16]; 
 
     function new();
         foreach(this.push[i]) begin
             this.push[i] = 0;
-            this.D_push[i] = 0;
-            this.pushtemp[i] = 0;
-            this.D_pushtemp[i] = 0;            
+            this.D_push[i] = 0;           
             this.overflow[i]=0;
         end
     endfunction //new()
@@ -26,23 +21,7 @@ class monitor#(parameter pckg_sz = 40, fifo_depth = 4);
         @(posedge vif.clk);
 
         forever begin
-            // Actualización de cada valor
-            for (j=0; j<3; j=j++) begin
-                foreach(this.pushtemp[i]) begin
-                    if (vif.pndng[i] == 1) begin
-                        this.pushtemp[i] = vif.pndng[i];
-                        this.D_pushtemp[i] = vif.data_out[i];
-		                vif.pop[i] = 0;                
-                    end
-                end
-                count = count + 1;
-                @(posedge clk) ;
-            end
-            if (count >= 2) begin
-                push = pushtemp;
-                D_push = D_pushtemp;
-                vif.pop[i] = 0;
-            end
+            
             // se revisa si se da overflows  
             foreach(this.overflow[j]) begin
                 this.overflow[j] = vif.w_overflow[j];
@@ -61,13 +40,24 @@ class monitor#(parameter pckg_sz = 40, fifo_depth = 4);
                 transaction.print("Monitor: Transaccion enviada");
                 i_monitor_checker_mbx.put(transaction);
             end
-            // Si hay un push se crea transacción
+
+            
+            // Actualización de cada valor
             foreach(this.push[i]) begin
+                this.push[i] = vif.pndng[i];;
+                this.D_push[i] = vif.data_out[i];
+            end
+                
+            // Si hay un push se crea transacción
+            foreach(this.push[i]) begin 
                 if(this.push[i]) valid = 1;
-                if(this.push[i]) vif.pop[i] = 1;
+                vif.pop[i] = 1;
             end
- 
+            @(posedge vif.clk);
+            foreach(vif.pop[i]) begin
+                vif.pop[i] = 0;
             end
+            @(posedge vif.clk);
             if (valid) begin
                 // Se genera transacción hacia checker
                 monitor_checker #(.pckg_sz(pckg_sz)) transaction;
