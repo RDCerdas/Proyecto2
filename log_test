@@ -2,7 +2,7 @@ Command: vcs -Mupdate testbench.sv -o salida -full64 -sverilog -kdb -debug_acc+a
 -debug_region+cell+encrypt -l log_test +lint=TFIPC-L -debug_acces+r -pvalue+fifo_depth=4+pckg_sz=40 \
 -cm tgl+cond
                          Chronologic VCS (TM)
-       Version R-2020.12-SP2_Full64 -- Mon Oct 25 12:12:34 2021
+       Version R-2020.12-SP2_Full64 -- Mon Oct 25 15:35:30 2021
 
                     Copyright (c) 1991 - 2021 Synopsys, Inc.
    This software and the associated documentation are proprietary to Synopsys,
@@ -54,13 +54,6 @@ Top Level Modules:
        test_bench
 TimeScale is 1 ns / 1 ps
 
-Warning-[NARW] Read and write on the same variable
-monitor.sv, 53
-  Reading and writing on the same variable 'i' will lead to unexpected 
-  behavior.
-  Please reorganize the code according to your original intention.
-
-
 Warning-[SIOB] Select index out of bounds
 Library.sv, 1072
 "D_push[(bits - 1):(bits - 8)]"
@@ -75,31 +68,12 @@ Notice: Ports coerced to inout, use -notice for details
 Starting vcs inline pass...
 34 modules and 0 UDP read.
 recompiling package vcs_paramclassrepository
-recompiling module prll_d_reg
-recompiling module prll_d_ltch_no_rst
-recompiling module prll_d_ltch
-recompiling module fifo_flops
-recompiling module fifo_ltch
-recompiling module fifo_ltch_no_rst
-recompiling module ntrpt_cam_fifo
-recompiling module serializer
-recompiling module bs_ntrfs
-recompiling module bs_ntrfs_n_rbtr
-recompiling module prll_bs_ntrfs
-recompiling module prll_bs_gnrtr_n_rbtr_fifo
-recompiling module conector
-recompiling module router_bus_gnrtr
-recompiling module router_bus_interface
-recompiling module mesh_gnrtr
-recompiling module wrapper
-recompiling module test_bench
-19 of 34 modules done
-	However, due to incremental compilation, only 19 modules need to be compiled. 
-make: Warning: File 'filelist.cu' has modification time 707 s in the future
-make[1]: Warning: File 'filelist.cu' has modification time 707 s in the future
+	However, due to incremental compilation, only 1 module needs to be compiled. 
+make: Warning: File 'filelist.cu' has modification time 708 s in the future
+make[1]: Warning: File 'filelist.cu' has modification time 708 s in the future
 rm -f _cuarc*.so _csrc*.so pre_vcsobj_*.so share_vcsobj_*.so
 make[1]: warning:  Clock skew detected.  Your build may be incomplete.
-make[1]: Warning: File 'filelist.cu' has modification time 707 s in the future
+make[1]: Warning: File 'filelist.cu' has modification time 708 s in the future
 ld -shared  -Bsymbolic --no-relax  -o .//../salida.daidir//_cuarc0.so objs/amcQw_d.o \
 
 rm -f _cuarc0.so
@@ -107,7 +81,7 @@ make[1]: warning:  Clock skew detected.  Your build may be incomplete.
 if [ -x ../salida ]; then chmod a-x ../salida; fi
 g++  -o ../salida      -rdynamic  -Wl,-rpath='$ORIGIN'/salida.daidir -Wl,-rpath=./salida.daidir \
 -Wl,-rpath=/mnt/vol_NFS_rh003/tools/vcs/R-2020.12-SP2/linux64/lib -L/mnt/vol_NFS_rh003/tools/vcs/R-2020.12-SP2/linux64/lib \
--Wl,-rpath-link=./  /usr/lib64/libnuma.so.1     _890303_archive_1.so _prev_archive_1.so \
+-Wl,-rpath-link=./  /usr/lib64/libnuma.so.1     _897309_archive_1.so _prev_archive_1.so \
 _cuarc0.so  SIM_l.o      rmapats_mop.o rmapats.o rmar.o rmar_nd.o  rmar_llvm_0_1.o \
 rmar_llvm_0_0.o           -lvirsim -lerrorinf -lsnpsmalloc -lvfs    -lvcsnew -lsimprofile \
 -lreader_common /mnt/vol_NFS_rh003/tools/vcs/R-2020.12-SP2/linux64/lib/libBA.a -luclinative \
@@ -117,5 +91,5 @@ rmar_llvm_0_0.o           -lvirsim -lerrorinf -lsnpsmalloc -lvfs    -lvcsnew -ls
 -lm -lpthread -ldl 
 ../salida up to date
 make: warning:  Clock skew detected.  Your build may be incomplete.
-CPU time: 2.648 seconds to compile + .769 seconds to elab + .306 seconds to link
+CPU time: 2.234 seconds to compile + .779 seconds to elab + .311 seconds to link
 Verdi KDB elaboration done and the database successfully generated: 0 error(s), 0 warning(s)

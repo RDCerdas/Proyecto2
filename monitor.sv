@@ -3,7 +3,7 @@ class monitor#(parameter pckg_sz = 40, fifo_depth = 4);
     monitor_checker_mbx i_monitor_checker_mbx;
     bit push [16];                       // push de cada canal
     bit [pckg_sz-1:0] D_push [16];       // Valor de cada dato
-    bit valid;                              // Variable para controlar generación de transacciones
+    bit valid;                              // Variable para controlar generaci�n de transacciones
     bit overflow[64];
     bit [pckg_sz-1] data_overflow[64];
     bit overflowout;
@@ -11,7 +11,7 @@ class monitor#(parameter pckg_sz = 40, fifo_depth = 4);
     function new();
         foreach(this.push[i]) begin
             this.push[i] = 0;
-            this.D_push[i] = 0;
+            this.D_push[i] = 0;           
             this.overflow[i]=0;
         end
     endfunction //new()
@@ -21,16 +21,6 @@ class monitor#(parameter pckg_sz = 40, fifo_depth = 4);
         @(posedge vif.clk);
 
         forever begin
-            // Actualización de cada valor
-            foreach(this.push[i]) begin
-                always @(:vif.pndng[i]) begin
-                    if (vif.vif.pndng[i] == 1) begin
-                        this.push[i] = vif.pndng[i];
-                        this.D_push[i] = vif.data_out[i];
-		                vif.pop[i] = 0;                
-                    end
-                end
-            end
             
             // se revisa si se da overflows  
             foreach(this.overflow[j]) begin
@@ -50,16 +40,26 @@ class monitor#(parameter pckg_sz = 40, fifo_depth = 4);
                 transaction.print("Monitor: Transaccion enviada");
                 i_monitor_checker_mbx.put(transaction);
             end
-            // Si hay un push se crea transacción
+
+            
+            // Actualizaci�n de cada valor
             foreach(this.push[i]) begin
+                this.push[i] = vif.pndng[i];
+                this.D_push[i] = vif.data_out[i];
+            end
+                
+            // Si hay un push se crea transacci�n
+            foreach(this.push[i]) begin 
                 if(this.push[i]) valid = 1;
                 if(this.push[i]) vif.pop[i] = 1;
             end
-            for (int i=0; i<2; i=i++) begin
-                @(posedge vif.clk) ; 
+            @(posedge vif.clk);
+            foreach(vif.pop[i]) begin
+                vif.pop[i] = 0;
             end
+
             if (valid) begin
-                // Se genera transacción hacia checker
+                // Se genera transacci�n hacia checker
                 monitor_checker #(.pckg_sz(pckg_sz)) transaction;
                 transaction = new();
                 foreach(this.push[i]) begin
@@ -77,3 +77,4 @@ class monitor#(parameter pckg_sz = 40, fifo_depth = 4);
 
     endtask //runs 
 endclass//monitor
+
