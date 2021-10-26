@@ -63,7 +63,7 @@ class trans_router #(parameter pckg_sz = 40);
     endfunction
 
     function void print(string tag);
-      $display("[%g] %s Tiempo=%g Reset=%g Retardo=%g \nDato=%p \nDestino=%p \nEscritura=%p \nOverflow=%p",$time,tag,tiempo_lectura,this.reset, this.retardo, this.dato, this.device_dest, this.escribir, this.overflow);
+      $display("[%g] %s Tiempo=%g Reset=%g Retardo=%g \nDato=%p \nDestino=%p \nEscritura=%p \nOverflow=%p",$time,tag,tiempo_lectura,this.reset, this.retardo, this.packet, this.device_dest, this.escribir, this.overflow);
       
     endfunction
 endclass
