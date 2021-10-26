@@ -48,7 +48,7 @@ class checkers #(parameter  pckg_sz = 40);
         if(transaction_monitor.overflow[i] == 1) begin 
           Dato=transaction_monitor.data_overflow[i];
           foreach (cola[a]) begin
-		  //$display("Dato = %h Cola = %h", Dato, cola[a].Dato);
+		  $display("Dato = %h Cola = %h", Dato, cola[a].Dato);
              if (Dato[pckg_sz-9:0]==cola[a].Dato[pckg_sz-9:0]) begin //si el dato recibido por el monitor es igual al que envio el checker se realiza la transaccion al scoreboard
 		           to_sb = new();
            	   to_sb.dato=Dato;
@@ -81,6 +81,7 @@ class checkers #(parameter  pckg_sz = 40);
            tamano=0;
            foreach (cola[a]) begin
 		 $display("Dato = %h Cola = %h", Dato, cola[a].Dato);
+		  $display("Dato = %h Cola = %h", Dato, cola[a].Dato);
              if (Dato[pckg_sz-9:0]==cola[a].Dato[pckg_sz-9:0]) begin //si el dato recibido por el monitor es igual al que envio el checker se realiza la transaccion al scoreboard
 		           to_sb = new();
            	   latencia = transaction_monitor.tiempo_escritura - cola[a].tiempo_lectura;
