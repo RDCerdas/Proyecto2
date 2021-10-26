@@ -34,7 +34,7 @@ class test1_1 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
         // Definición de las partes de la prueba
         // Primera sección pruebas aleatorias y de caso de esquina
         instruccion = new();
-      	instruccion.num_transacciones = 400;
+      	instruccion.num_transacciones = 10;
         instruccion.max_retardo = 20;
         instruccion.tipo_secuencia = sec_trans_aleatorias;
         test_agent_mbx_inst.put(instruccion);
@@ -186,7 +186,7 @@ class test2_2 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
         // Definición de las partes de la prueba
         // Primera sección pruebas aleatorias y de caso de esquina
         instruccion = new();
-      	instruccion.num_transacciones = 200;
+      	instruccion.num_transacciones = 20;
         instruccion.retardo = 10;
         instruccion.tipo_secuencia = sec_trans_especificas;
         for (int i=0; i<4; ++i) begin
@@ -203,7 +203,7 @@ class test2_2 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
         test_agent_mbx_inst.put(instruccion);
         $display("[%g]  Test: Enviadas transacciones en un dispositivo",$time);
 
-	    #20000;
+	    #2000000;
 	    $finish();
     endtask
 
