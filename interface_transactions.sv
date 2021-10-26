@@ -120,6 +120,7 @@ class checker_scoreboard #(parameter pckg_sz = 40);
   	int completado;
     bit [pckg_sz-1:0] dato;
     bit reset;
+    bit overflow;
 
     function new(bit [pckg_sz-1:0] dto = 0, int t_escritura = 0, int t_lectura = 0, int lat = 0, int dev_env = 0, int dev_dest = 0);
       this.dato = dto;
@@ -131,6 +132,7 @@ class checker_scoreboard #(parameter pckg_sz = 40);
       this.device_dest = dev_dest;
       this.completado=0;
       this.valido=0;
+      this.overflow=0;
     endfunction
 
     function clean();
@@ -143,9 +145,10 @@ class checker_scoreboard #(parameter pckg_sz = 40);
       this.device_dest = 0;
       this.device_env = 0;
       this.reset = 0;
+      this.overflow=0;
     endfunction
       function void print(string tag);
-        $display("[%g] %s Dato=%h Destino=%g Fuente=%g reset=%g Valido=%g Completado=%g Escritura=%g Lectura=%g Latencia=%g", $time() ,tag ,this.dato,this.device_dest, this.device_env, this.reset, this.valido, this.completado, this.tiempo_escritura, this.tiempo_lectura, this.latencia);
+        $display("[%g] %s Dato=%h Destino=%g Fuente=%g reset=%g Valido=%g Completado=%g Escritura=%g Lectura=%g Latencia=%g Overflow=%g", $time() ,tag ,this.dato,this.device_dest, this.device_env, this.reset, this.valido, this.completado, this.tiempo_escritura, this.tiempo_lectura, this.latencia, this.overflow);
       
     endfunction
 endclass
