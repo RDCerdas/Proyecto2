@@ -34,7 +34,7 @@ class test1_1 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
         // Definición de las partes de la prueba
         // Primera sección pruebas aleatorias y de caso de esquina
         instruccion = new();
-      	instruccion.num_transacciones = 10;
+      	instruccion.num_transacciones = 400;
         instruccion.max_retardo = 20;
         instruccion.tipo_secuencia = sec_trans_aleatorias;
         test_agent_mbx_inst.put(instruccion);
