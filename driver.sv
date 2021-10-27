@@ -121,9 +121,10 @@ class driver #(parameter pckg_sz = 40, fifo_depth = 4);
       vif.reset=1;
       @(posedge vif.clk);
 		
-      forever begin
+      forever begin	
         @(posedge vif.clk);
         valid_transaction = 0;
+
         // Actualización de todos los fifos
         foreach (drivers_fifo[i]) begin
           drivers_fifo[i].pop = vif.popin[i];
@@ -133,6 +134,7 @@ class driver #(parameter pckg_sz = 40, fifo_depth = 4);
           vif.data_out_i_in[i] = drivers_fifo[i].D_pop;
           vif.pndng_i_in[i] = drivers_fifo[i].pndng;
         end
+
 
         // Si hay un pop en 1 se genera transacción
         foreach (drivers_fifo[i]) begin 
