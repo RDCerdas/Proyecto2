@@ -12,12 +12,12 @@ typedef enum {retraso_promedio, reset_ancho_banda, report_csv, append_csv_min_bw
 // Paquete agente-driver, driver-checker
 class trans_router #(parameter pckg_sz = 40);
     rand int retardo;  
-    rand bit modo [16-1:0] = '{default:0};
-    rand bit[pckg_sz-18:0] dato [16-1:0];
-    rand bit[7:0] device_dest [16-1:0];
-    rand bit escribir [16-1:0];
-    bit overflow [16-1:0];
-    bit [pckg_sz-1:0] packet [16-1:0];
+    rand bit modo [16] = '{default:0};
+    rand bit[pckg_sz-18:0] dato [16];
+    rand bit[7:0] device_dest [16];
+    rand bit escribir [16];
+    bit overflow [16];
+    bit [pckg_sz-1:0] packet [16];
     rand bit reset;
     int tiempo_lectura;
     int max_retardo;
@@ -87,8 +87,8 @@ endinterface //mesh_if
 
 // Paquete monitor-checker
 class monitor_checker #(parameter pckg_sz = 40);
-    bit [pckg_sz-1:0] dato [16-1:0];
-    bit valid [16-1:0];
+    bit [pckg_sz-1:0] dato [16];
+    bit valid [16];
     int tiempo_escritura;
     bit overflow[64-1:0];
     bit data_overflow[64-1:0];
@@ -155,13 +155,13 @@ endclass
 
 class test_agent #(parameter pckg_sz = 40);
     tipo_sec  tipo_secuencia;
-    bit [pckg_sz-18:0] spec_dato [16-1:0];
+    bit [pckg_sz-18:0] spec_dato [16];
     int retardo;
-    bit spec_escribir [16-1:0];
-    bit [7:0] spec_device_dest [16-1:0];
+    bit spec_escribir [16];
+    bit [7:0] spec_device_dest [16];
     int max_retardo;
     int num_transacciones = 10;
-    bit spec_modo [16-1:0] = '{default:4};
+    bit spec_modo [16] = '{default:4};
     bit reset;
 
   function new(tipo_sec t_sec = trans_aleatoria, int ret = 0);
