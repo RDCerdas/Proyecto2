@@ -72,7 +72,7 @@ endclass
 // Interfaz para conectar con el bus
 interface mesh_if #(parameter pckg_sz = 40) (input clk);
     logic reset;
-    logic pndng[15:0;
+    logic pndng[15:0];
     logic pndng_i_in[15:0];
     logic pop[15:0];
     logic popin[15:0];

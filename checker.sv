@@ -104,7 +104,7 @@ class checkers #(parameter  pckg_sz = 40);
           if (tamano==0) begin//si el dato no se encontró se finaliza el test
 		 $error("Dato incorrecto");
            	 transaction_monitor.print("Checker: El dato recibido por el monitor no fue enviado por el driver");
-         	 $finish(1);
+         	 //$finish(1);
            end
    	end
          end

@@ -1,9 +1,9 @@
 `timescale 1ns/1ps
 
 
-parameter pckg_sz = 40;
+parameter pckg_sz = 50;
 parameter fifo_depth = 4;
-parameter test = "test1_1";
+parameter test = 3;
 
 
 `include "interface_transactions.sv"
@@ -38,7 +38,7 @@ module test_bench;
     initial begin
         clk = 0;
         case (test)
-        "test1_1": begin
+        1: begin
             t1_1 = new();
             t1_1._if = _if;
             t1_1.ambiente_inst.driver_inst.vif = _if;
@@ -48,7 +48,7 @@ module test_bench;
             join_none
         end
 
-        "test1_2": begin
+        2: begin
             t1_2 = new();
             t1_2._if = _if;
             t1_2.ambiente_inst.driver_inst.vif = _if;
@@ -58,7 +58,7 @@ module test_bench;
             join_none
         end
 
-        "test1_3": begin
+        3: begin
             t1_3 = new();
             t1_3._if = _if;
             t1_3.ambiente_inst.driver_inst.vif = _if;
@@ -68,7 +68,7 @@ module test_bench;
             join_none
         end
 
-        "test2_1": begin
+        4: begin
             t2_1 = new();
             t2_1._if = _if;
             t2_1.ambiente_inst.driver_inst.vif = _if;
@@ -78,7 +78,7 @@ module test_bench;
             join_none
         end
 
-        "test2_2": begin
+        5: begin
             t2_2 = new();
             t2_2._if = _if;
             t2_2.ambiente_inst.driver_inst.vif = _if;

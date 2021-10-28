@@ -37,7 +37,7 @@ int file_max_bw;
             reset_bw = 0;
           end
         end
-        else if ((transaccion_entrante.valido = 0)&&(transaccion_entrante.overflow = 0)) begin
+        else if ((transaccion_entrante.valido == 0)&&(transaccion_entrante.overflow == 0)) begin
           m_misses++;
         end
         scoreboard.push_back(transaccion_entrante);
@@ -64,7 +64,7 @@ int file_max_bw;
               for(int i=0;i<tamano_sb;i++) begin
                 auxiliar_trans = scoreboard.pop_front; //se hace pop de la cola con las transacciones recibidas
                 auxiliar_trans.print("SB_Report:");
-                $fwrite(report_csv_file, "%0g, %0g, %0g, %0g, %0g, %0g, %0g, %0g, %0g, %0g\n",auxiliar_trans.dato,auxiliar_trans.device_dest, auxiliar_trans.device_env, auxiliar_trans.reset, auxiliar_trans.valido, auxiliar_trans.completado, auxiliar_trans.tiempo_escritura, auxiliar_trans.tiempo_lectura, auxiliar_trans.latencia);
+                $fwrite(report_csv_file, "%0h, %0h, %0g, %0g, %0g, %0g, %0g, %0g, %0g, %0g\n",auxiliar_trans.dato,auxiliar_trans.device_dest, auxiliar_trans.device_env, auxiliar_trans.reset, auxiliar_trans.valido, auxiliar_trans.overflow, auxiliar_trans.completado, auxiliar_trans.tiempo_escritura, auxiliar_trans.tiempo_lectura, auxiliar_trans.latencia);
               end
 
               $fclose(report_csv_file);

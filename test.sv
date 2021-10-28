@@ -48,6 +48,7 @@ class test1_1 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
         test_sb_mbx_inst.put(retraso_promedio);
 
         #100;
+	$display("Finished test 1.1");
 	      $finish();
     endtask
 
@@ -65,7 +66,7 @@ class test1_2 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
         // Definición de las partes de la prueba
         // Primera sección pruebas aleatorias y de caso de esquina
         instruccion = new();
-      	instruccion.num_transacciones = 200;
+      	instruccion.num_transacciones = 5000;
         instruccion.max_retardo = 1;
         instruccion.retardo = 1;
         instruccion.tipo_secuencia = sec_trans_especificas;
@@ -81,6 +82,7 @@ class test1_2 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
       test_sb_mbx_inst.put(retraso_promedio);
 
       #100;
+      $display("Finished teset 1.2");
 	    $finish();
     endtask
 
@@ -104,13 +106,13 @@ class test1_3 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
         $display("[%g]  Test: Enviadas transacciones en todos los dispositivos",$time);
 
 
-        // Finaliza primer seccion de pruebas
 	    #2000000;
       test_sb_mbx_inst.put(append_csv_max_bw);
       test_sb_mbx_inst.put(report_csv);
       test_sb_mbx_inst.put(retraso_promedio);
 
       #100;
+      $display("Finished test 1.3 %d", pckg_sz);
 	    $finish();
     endtask
 
@@ -201,6 +203,7 @@ class test2_1 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
       test_sb_mbx_inst.put(retraso_promedio);
 
       #100;
+      $display("Finished test 2.1");
 	    $finish();
     endtask
 
@@ -235,6 +238,7 @@ class test2_2 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
       test_sb_mbx_inst.put(retraso_promedio);
 
       #100;
+      $display("Finished test 2.2");
 	    $finish();
     endtask
 
