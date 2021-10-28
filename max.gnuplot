@@ -1,11 +1,9 @@
 set datafile separator ','
 set key autotitle columnhead
-set ylabel "Fifo Depth"
-set xlabel "Devices"
+set ylabel "Max bandwidth (Mbps)"
+set xlabel "Fifo depth"
 
-set dgrid3d 2,2
-
-splot "max_bandwidth.csv" u 1:2:3 with lines 
+plot "max_bandwidth.csv" u 1:2 with lines 
 
 set pointsize 40 
 
