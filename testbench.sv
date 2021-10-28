@@ -1,9 +1,10 @@
 `timescale 1ns/1ps
 
-
-parameter pckg_sz = 50;
-parameter fifo_depth = 4;
-parameter test = 3;
+`ifndef SCRIPT
+    parameter pckg_sz = 40;
+    parameter fifo_depth = 4;
+    parameter test = 1;
+`endif
 
 
 `include "interface_transactions.sv"
