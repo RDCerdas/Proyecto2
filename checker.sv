@@ -50,8 +50,7 @@ class checkers #(parameter  pckg_sz = 40);
 	  tamano = 0;
           foreach (cola[a]) begin
 		  //$display("Dato = %h Cola = %h", Dato, cola[a].Dato);
-             if (Dato[pckg_sz-9:0]==cola[a].Dato[pckg_sz-9:0]) begin //si el dato recibido por el monitor es igual al que envio el checker se realiza la transaccion al scoreboard
-		           to_sb = new();
+             if (Dato[pckg_sz-9:0]==cola[a].Dato[pckg_sz-9:0]) begin //si se da un overflow se envia la transaccion con el overflow en 1 
            	   to_sb.dato=Dato;
            	   to_sb.tiempo_escritura=0;
                to_sb.device_dest= Dato [pckg_sz-9:pckg_sz-16];
@@ -65,7 +64,7 @@ class checkers #(parameter  pckg_sz = 40);
            	   to_sb.print("Checker:Transaccion de Overflow Completada");
            	   i_checker_scoreboard_mbx.put(to_sb);
            	   tamano=1;
-		           cola.delete(a);
+		           cola.delete(a); //se elimina el dato que genero overflow de la cola
 		           break;
              end
            end
@@ -102,7 +101,7 @@ class checkers #(parameter  pckg_sz = 40);
 		           break;
              end
            end
-          if (tamano==0) begin//si el dato no se encontró se finaliza el test
+          if (tamano==0) begin//si el dato no se encontró se envia la transaccion como invalida 
 		 $error("Dato incorrecto");
               to_sb = new();
            	   to_sb.dato=Dato;
@@ -142,9 +141,9 @@ class checkers #(parameter  pckg_sz = 40);
               end
            end
       end
-         if (transaction_driver.reset==1) begin //en el caso de un reset de hace pop a los datos almacenados en el cola enviando las transacciones al scoroboard que fueron invalidados
+         if (transaction_driver.reset==1) begin //en el caso de un reset de hace pop a los datos almacenados en el cola enviando las transacciones al scoreboard que fueron invalidados
         while(cola.size()>0) begin
-          auxiliar=cola.pop_back;
+          auxiliar=cola.pop_back; // se saca cada dato de la cola y se envia al scoreboard indicando el reset
           to_sb = new();
           to_sb.dato=auxiliar.Dato;
           to_sb.tiempo_escritura=0;
