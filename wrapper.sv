@@ -45,9 +45,10 @@ module wrapper #(parameter pckg_sz = 40, parameter fifo_depth = 4)(mesh_if _if);
                         end 
 			            else
 			                w_overflow[nu+4*(clm-1)+16*(rw-1)] <= 1'b0;
-
+			
                         w_data[nu+4*(clm-1)+16*(rw-1)] <= uut._rw_[rw]._clm_[clm].rtr._nu_[nu].rtr_ntrfs_.fifo_out.Dout;
-                    end
+		end
+                   
 
                 end
             end

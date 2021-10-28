@@ -47,6 +47,7 @@ class checkers #(parameter  pckg_sz = 40);
       foreach (transaction_monitor.overflow[i]) begin
         if(transaction_monitor.overflow[i] == 1) begin 
           Dato=transaction_monitor.data_overflow[i];
+	  tamano = 0;
           foreach (cola[a]) begin
 		  //$display("Dato = %h Cola = %h", Dato, cola[a].Dato);
              if (Dato[pckg_sz-9:0]==cola[a].Dato[pckg_sz-9:0]) begin //si el dato recibido por el monitor es igual al que envio el checker se realiza la transaccion al scoreboard
@@ -70,7 +71,7 @@ class checkers #(parameter  pckg_sz = 40);
            end
           if (tamano==0) begin//si el dato no se encontró se finaliza el test
            	 transaction_monitor.print("Checker: El dato recibido por el monitor no fue enviado por el driver");
-         	   $finish(1);
+		 $finish(1);
            end
         end
         
