@@ -18,6 +18,9 @@
 `include "test.sv"
 
 
+// Testbench utilizado para ver la gerarquía interna de conexión
+
+// ################################# No se utiliza #########################################################
 
 module test_bench;
     reg clk;
@@ -53,3 +56,5 @@ module test_bench;
 
 
 endmodule
+
+// ################################# No se utiliza #########################################################

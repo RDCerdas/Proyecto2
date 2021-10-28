@@ -1,3 +1,4 @@
+// Test base para declarar los componentes necesarios
 class base_test #(parameter pckg_sz = 40, fifo_depth = 4);
     test_agent_mbx test_agent_mbx_inst;
     test_sb_mbx test_sb_mbx_inst;
@@ -26,7 +27,9 @@ class base_test #(parameter pckg_sz = 40, fifo_depth = 4);
 
 endclass //base_test
 
+// Test creados que heredan del base
 
+// Prueba aleatoria
 class test1_1 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg_sz, fifo_depth);
 
     task run;
@@ -54,17 +57,17 @@ class test1_1 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
 
 endclass //test1_1
 
-
+// Prueba de ancho de banda mínimo
 class test1_2 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg_sz, fifo_depth);
 
     task run;
         super.run();
 
+        // Reinicia calculo de ancho de banda
         test_sb_mbx_inst.put(reset_ancho_banda);
         #10;
         
-        // Definición de las partes de la prueba
-        // Primera sección pruebas aleatorias y de caso de esquina
+        // Envío continuo de dispositivo 0 a 15
         instruccion = new();
       	instruccion.num_transacciones = 5000;
         instruccion.max_retardo = 1;
@@ -88,18 +91,18 @@ class test1_2 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
 
 endclass //test1_2
 
+// Prueba de ancho de banda máximo
 class test1_3 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg_sz, fifo_depth);
 
     task run;
         super.run();
-
+        // Reinicia calculo de ancho de banda
         test_sb_mbx_inst.put(reset_ancho_banda);
         #10;
 
-        // Definición de las partes de la prueba
-        // Primera sección pruebas aleatorias y de caso de esquina
+        // Envío de escritura en todos los dispositivos
         instruccion = new();
-      	instruccion.num_transacciones = 400;
+      	instruccion.num_transacciones = 500;
         instruccion.max_retardo = 1;
         instruccion.tipo_secuencia = sec_escrituras_aleatorias;
         test_agent_mbx_inst.put(instruccion);
@@ -122,8 +125,9 @@ class test2_1 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
 
     task run;
         super.run();
-        // Definición de las partes de la prueba
-        // Primera sección pruebas aleatorias y de caso de esquina
+
+        // Casos de esquina
+        // Broadcast en todos los dispositivos
         instruccion = new();
       	instruccion.num_transacciones = 10;
         instruccion.retardo = 10;
@@ -137,6 +141,7 @@ class test2_1 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
         test_agent_mbx_inst.put(instruccion);
         $display("[%g]  Test: Enviadas transacciones en un dispositivo",$time);
 
+        // Envío desde todos los dispositivos a dispositivo 0
         instruccion = new();
       	instruccion.num_transacciones = 10;
         instruccion.retardo = 10;
@@ -149,20 +154,6 @@ class test2_1 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
         
         test_agent_mbx_inst.put(instruccion);
         $display("[%g]  Test: Enviadas transacciones en un dispositivo",$time);
-
-
-        instruccion = new();
-      	instruccion.num_transacciones = 10;
-        instruccion.retardo = 10;
-        instruccion.tipo_secuencia = sec_trans_especificas;
-        // Se envía dato desde cero hasta cero
-        instruccion.enviar_dato_especifico(0, 'hBB, 0, 0);
-        
-        test_agent_mbx_inst.put(instruccion);
-        $display("[%g]  Test: Enviadas transacciones en un dispositivo",$time);
-
-        // Se espera a que termina
-        #1000;
 
         // Intrucción de broadcast anterior con reset
         instruccion = new();
@@ -179,7 +170,7 @@ class test2_1 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
         test_agent_mbx_inst.put(instruccion);
         $display("[%g]  Test: Enviadas transacciones en un dispositivo",$time);
 
-        // Intrucción de envío de datos simultaneo anterior con reset
+        // Intrucción de envío de datos simultaneo anteriores con reset
         instruccion = new();
       	instruccion.num_transacciones = 10;
         instruccion.retardo = 10;
@@ -194,11 +185,8 @@ class test2_1 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
         test_agent_mbx_inst.put(instruccion);
         $display("[%g]  Test: Enviadas transacciones en un dispositivo",$time);
 
-
-
-
         // Finaliza primer seccion de pruebas
-	    #200000;
+	    #20000;
       test_sb_mbx_inst.put(report_csv);
       test_sb_mbx_inst.put(retraso_promedio);
 
@@ -216,7 +204,7 @@ class test2_2 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
         // Definición de las partes de la prueba
         // Primera sección pruebas aleatorias y de caso de esquina
         instruccion = new();
-      	instruccion.num_transacciones = 20;
+      	instruccion.num_transacciones = 400;
         instruccion.retardo = 10;
         instruccion.tipo_secuencia = sec_trans_especificas;
         for (int i=0; i<4; ++i) begin

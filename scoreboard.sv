@@ -31,6 +31,7 @@ int file_max_bw;
           transacciones_completadas++;
           transacciones_completados_bw++;
           tiempo_final_bw = transaccion_entrante.tiempo_escritura;
+          // Si la transaccion se completa se considera que es un match
           m_matches++;
           if(reset_bw) begin
             tiempo_inicial_bw = transaccion_entrante.tiempo_lectura;
@@ -38,6 +39,7 @@ int file_max_bw;
           end
         end
         else if ((transaccion_entrante.valido == 0)&&(transaccion_entrante.overflow == 0)&&(transaccion_entrante.reset == 0)) begin
+          // Si la transaccion no se completa y no es por overflow o reset se considera un miss
           m_misses++;
         end
         scoreboard.push_back(transaccion_entrante);
@@ -45,7 +47,8 @@ int file_max_bw;
         if(i_test_sb_mbx.num()>0)begin //se reciben las transacciones del test para generar los diferentes reportes 
           i_test_sb_mbx.get(orden);
           case(orden)
-            retardo_promedio: begin //reporte para el retador promedio
+            retardo_promedio: begin //reporte para el retador promedio y el número de errores que se dieron
+            // Se imprime la cantidad de matches y misses
               $display("Score Board: Recibida Orden Retardo_Promedio");
               retardo_promedio = retardo_total/transacciones_completadas;
               $display("\n###################\n");
@@ -78,13 +81,14 @@ int file_max_bw;
               tiempo_final_bw = 0;
             end
             append_csv_min_bw: begin //se genera reporte con el ancho de banda min
-              
+              // Se calcula el ancho de banda en función de todos los paquete recibidos
               file_min_bw = $fopen("min_bandwidth.csv", "a");
               $fwrite(file_min_bw, "\n%0d,%0.3f", fifo_depth, (transacciones_completados_bw*pckg_sz*1000)/(tiempo_final_bw-tiempo_inicial_bw));
 	            $fclose(file_min_bw);
             end
             append_csv_max_bw: begin //se genera reporte con el ancho de banda max
               file_max_bw = $fopen("max_bandwidth.csv", "a");
+              // Se calcula el ancho de banda en función de todos los paquete recibidos
               $fwrite(file_max_bw, "\n%0d,%0.3f", fifo_depth, (transacciones_completados_bw*pckg_sz*1000)/(tiempo_final_bw-tiempo_inicial_bw));
               $fclose(file_max_bw);
             end

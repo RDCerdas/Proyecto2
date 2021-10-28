@@ -81,6 +81,7 @@ class driver #(parameter pckg_sz = 40, fifo_depth = 4);
     bit reset_temp;
     int valid_transaction;
 
+    // Función para construir el paquete en función del dispositivo destino
     function bit [pckg_sz-1:0] create_pkg(bit mode, bit [7:0] destino, bit [pckg_sz-18:0] dato);
       bit [pckg_sz-1:0] pkg;
 
@@ -105,7 +106,7 @@ class driver #(parameter pckg_sz = 40, fifo_depth = 4);
       
       pkg[pckg_sz-17] = mode;
       pkg[pckg_sz-18:0] = dato;
-
+      // Se retorna el paquete construido
       return pkg;
     endfunction
 
@@ -161,6 +162,7 @@ class driver #(parameter pckg_sz = 40, fifo_depth = 4);
             transaction_checker.device_dest[i] = this.dato_temp[i][pckg_sz-9:pckg_sz-16];
             transaction_checker.escribir[i] = this.vif.popin[i];
           end
+          // Se envía la información al checker
             transaction_checker.tiempo_lectura = $time;
             transaction_checker.reset = reset_temp;
             transaction_checker.print("Driver: Transaccion enviada a Checker");
@@ -180,6 +182,7 @@ class driver #(parameter pckg_sz = 40, fifo_depth = 4);
             transaction.print("Driver: Transaccion recibida");
             $display("Transacciones pendientes en el mbx agnt_drv = %g",i_agent_driver_mbx.num());
             vif.reset = transaction.reset;
+            // Se guarda el paquete en el fifo correspondiente
             foreach (drivers_fifo[i]) drivers_fifo[i].write(
                     create_pkg(transaction.modo[i], transaction.device_dest[i], 
                     transaction.dato[i]), transaction.escribir[i]);
