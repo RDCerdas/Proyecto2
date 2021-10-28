@@ -80,7 +80,7 @@ class checkers #(parameter  pckg_sz = 40);
            Dato=transaction_monitor.dato[i];
            tamano=0;
            foreach (cola[a]) begin
-	     $display("Dato = %h Cola = %h", Dato, cola[a].Dato);
+	     //$display("Dato = %h Cola = %h", Dato, cola[a].Dato);
              if (Dato[pckg_sz-9:0]==cola[a].Dato[pckg_sz-9:0]) begin //si el dato recibido por el monitor es igual al que envio el checker se realiza la transaccion al scoreboard
 		           to_sb = new();
            	   latencia = transaction_monitor.tiempo_escritura - cola[a].tiempo_lectura;
@@ -103,7 +103,17 @@ class checkers #(parameter  pckg_sz = 40);
            end
           if (tamano==0) begin//si el dato no se encontró se finaliza el test
 		 $error("Dato incorrecto");
-           	 transaction_monitor.print("Checker: El dato recibido por el monitor no fue enviado por el driver");
+              to_sb = new();
+           	   to_sb.dato=Dato;
+           	   to_sb.tiempo_escritura=0;
+               to_sb.device_dest= Dato [pckg_sz-9:pckg_sz-16];
+           	   to_sb.latencia=0;
+           	   to_sb.completado = 0;
+           	   to_sb.valido= 0;
+		           to_sb.reset = 0;
+               to_sb.overflow= 0;
+           	   to_sb.print("Checker:Transaccion Completada");
+           	   i_checker_scoreboard_mbx.put(to_sb);
          	 //$finish(1);
            end
    	end
@@ -151,13 +161,16 @@ class checkers #(parameter  pckg_sz = 40);
         end
       end
 	  end
-
+/*
     foreach (cola[a]) begin
 	    if(cola[a].tiempo_lectura+timeout < $time) begin
         //cola[a].print("Checker: Error timeout de dato");
         //$finish(1);
+
 end
+
     end
+*/
   end
      endtask 
 endclass 

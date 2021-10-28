@@ -37,7 +37,7 @@ int file_max_bw;
             reset_bw = 0;
           end
         end
-        else if ((transaccion_entrante.valido == 0)&&(transaccion_entrante.overflow == 0)) begin
+        else if ((transaccion_entrante.valido == 0)&&(transaccion_entrante.overflow == 0)&&(transaccion_entrante.reset == 0)) begin
           m_misses++;
         end
         scoreboard.push_back(transaccion_entrante);
