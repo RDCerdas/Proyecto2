@@ -2,11 +2,11 @@ printf "Drivers,Fifo Depth,Max Bandwidth(Mbps)" > max_bandwidth.csv
 printf "Drivers,Fifo Depth,Min Bandwidth(Mbps)" > min_bandwidth.csv
 source /mnt/vol_NFS_rh003/estudiantes/archivos_config/synopsys_tools.sh
 
-for pckg in  40  
+for pckg in  40 50  
 	do
-	for test in 1 2 3 4 5 	
+	for test in 2 3  	
 	do
-		for fifo in 4 8   
+		for fifo in 4 8 16 32   
 		do
 			printf "\x60define SCRIPT 1 \n" > parameters.sv
 			printf "parameter pckg_sz = %d;\nparameter test = %d;\n parameter fifo_depth=%d;\n" $pckg $test $fifo  >> parameters.sv
