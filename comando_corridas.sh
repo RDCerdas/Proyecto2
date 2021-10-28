@@ -20,5 +20,4 @@ for pckg in  40
 	done
 done
 
-gnuplot -p min.gnuplot
-gnuplot -p max.gnuplot
+verdi -cov -covdir salida.vdb&

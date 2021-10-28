@@ -161,16 +161,6 @@ class checkers #(parameter  pckg_sz = 40);
         end
       end
 	  end
-/*
-    foreach (cola[a]) begin
-	    if(cola[a].tiempo_lectura+timeout < $time) begin
-        //cola[a].print("Checker: Error timeout de dato");
-        //$finish(1);
-
-end
-
-    end
-*/
   end
      endtask 
 endclass 
