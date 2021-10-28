@@ -42,7 +42,12 @@ class test1_1 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
 
 
         // Finaliza primer seccion de pruebas
-	      #20000;
+	      #2000000;
+
+        test_sb_mbx_inst.put(report_csv);
+        test_sb_mbx_inst.put(retraso_promedio);
+
+        #100;
 	      $finish();
     endtask
 
@@ -53,6 +58,10 @@ class test1_2 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
 
     task run;
         super.run();
+
+        test_sb_mbx_inst.put(reset_ancho_banda);
+        #10;
+        
         // Definición de las partes de la prueba
         // Primera sección pruebas aleatorias y de caso de esquina
         instruccion = new();
@@ -66,7 +75,12 @@ class test1_2 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
 
 
         // Finaliza primer seccion de pruebas
-	    #20000;
+	    #2000000;
+      test_sb_mbx_inst.put(append_csv_min_bw);
+      test_sb_mbx_inst.put(report_csv);
+      test_sb_mbx_inst.put(retraso_promedio);
+
+      #100;
 	    $finish();
     endtask
 
@@ -76,6 +90,10 @@ class test1_3 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
 
     task run;
         super.run();
+
+        test_sb_mbx_inst.put(reset_ancho_banda);
+        #10;
+
         // Definición de las partes de la prueba
         // Primera sección pruebas aleatorias y de caso de esquina
         instruccion = new();
@@ -87,7 +105,12 @@ class test1_3 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
 
 
         // Finaliza primer seccion de pruebas
-	    #20000;
+	    #2000000;
+      test_sb_mbx_inst.put(append_csv_max_bw);
+      test_sb_mbx_inst.put(report_csv);
+      test_sb_mbx_inst.put(retraso_promedio);
+
+      #100;
 	    $finish();
     endtask
 
@@ -173,7 +196,11 @@ class test2_1 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
 
 
         // Finaliza primer seccion de pruebas
-	    #20000;
+	    #200000;
+      test_sb_mbx_inst.put(report_csv);
+      test_sb_mbx_inst.put(retraso_promedio);
+
+      #100;
 	    $finish();
     endtask
 
@@ -204,6 +231,10 @@ class test2_2 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
         $display("[%g]  Test: Enviadas transacciones en un dispositivo",$time);
 
 	    #2000000;
+      test_sb_mbx_inst.put(report_csv);
+      test_sb_mbx_inst.put(retraso_promedio);
+
+      #100;
 	    $finish();
     endtask
 

@@ -3,6 +3,7 @@
 
 parameter pckg_sz = 40;
 parameter fifo_depth = 4;
+parameter test = "test1_1";
 
 
 `include "interface_transactions.sv"
@@ -20,7 +21,12 @@ parameter fifo_depth = 4;
 module test_bench;
     reg clk;
    
-    test1_1 #(.pckg_sz(pckg_sz), .fifo_depth(fifo_depth)) t0;
+    test1_1 #(.pckg_sz(pckg_sz), .fifo_depth(fifo_depth)) t1_1;
+    test1_2 #(.pckg_sz(pckg_sz), .fifo_depth(fifo_depth)) t1_2;
+    test1_3 #(.pckg_sz(pckg_sz), .fifo_depth(fifo_depth)) t1_3;
+    test2_1 #(.pckg_sz(pckg_sz), .fifo_depth(fifo_depth)) t2_1;
+    test2_2 #(.pckg_sz(pckg_sz), .fifo_depth(fifo_depth)) t2_2;
+
     mesh_if #(.pckg_sz(pckg_sz)) _if(.clk(clk));
 
     always #5 clk = ~clk;
@@ -31,13 +37,59 @@ module test_bench;
 
     initial begin
         clk = 0;
-        t0 = new();
-        t0._if = _if;
-      	t0.ambiente_inst.driver_inst.vif = _if;
-        t0.ambiente_inst.monitor_inst.vif = _if;
-        fork
-            t0.run();
-        join_none
+        case (test)
+        "test1_1": begin
+            t1_1 = new();
+            t1_1._if = _if;
+            t1_1.ambiente_inst.driver_inst.vif = _if;
+            t1_1.ambiente_inst.monitor_inst.vif = _if;
+            fork
+                t1_1.run();
+            join_none
+        end
+
+        "test1_2": begin
+            t1_2 = new();
+            t1_2._if = _if;
+            t1_2.ambiente_inst.driver_inst.vif = _if;
+            t1_2.ambiente_inst.monitor_inst.vif = _if;
+            fork
+                t1_2.run();
+            join_none
+        end
+
+        "test1_3": begin
+            t1_3 = new();
+            t1_3._if = _if;
+            t1_3.ambiente_inst.driver_inst.vif = _if;
+            t1_3.ambiente_inst.monitor_inst.vif = _if;
+            fork
+                t1_3.run();
+            join_none
+        end
+
+        "test2_1": begin
+            t2_1 = new();
+            t2_1._if = _if;
+            t2_1.ambiente_inst.driver_inst.vif = _if;
+            t2_1.ambiente_inst.monitor_inst.vif = _if;
+            fork
+                t2_1.run();
+            join_none
+        end
+
+        "test2_2": begin
+            t2_2 = new();
+            t2_2._if = _if;
+            t2_2.ambiente_inst.driver_inst.vif = _if;
+            t2_2.ambiente_inst.monitor_inst.vif = _if;
+            fork
+                t2_2.run();
+            join_none
+        end
+            
+        endcase
+
     end
 
     always@(posedge clk) begin
