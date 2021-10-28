@@ -1,5 +1,5 @@
-printf "Drivers,Fifo Depth,Max Bandwidth(Mbps)" > max_bandwidth.csv
-printf "Drivers,Fifo Depth,Min Bandwidth(Mbps)" > min_bandwidth.csv
+printf "Fifo Depth,Max Bandwidth(Mbps)" > max_bandwidth.csv
+printf "Fifo Depth,Min Bandwidth(Mbps)" > min_bandwidth.csv
 source /mnt/vol_NFS_rh003/estudiantes/archivos_config/synopsys_tools.sh
 
 for pckg in  40  
