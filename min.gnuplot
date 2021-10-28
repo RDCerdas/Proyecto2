@@ -1,11 +1,10 @@
 set datafile separator ','
 set key autotitle columnhead
-set ylabel "Fifo Depth"
-set xlabel "Devices"
+set ylabel "Min bandwidth (Mbps)"
+set xlabel "Fifo depth"
 
-set dgrid3d 2,2
 
-splot "min_bandwidth.csv" u 1:2:3 with lines 
+plot "min_bandwidth.csv" u 1:2 with lines 
 
 set pointsize 40 
 
