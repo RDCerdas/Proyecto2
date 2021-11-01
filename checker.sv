@@ -124,15 +124,6 @@ class checkers #(parameter  pckg_sz = 40);
         transaction_driver.print("Checker: Se recibe trasacción desde el driver");
          foreach (transaction_driver.escribir[i]) begin
            if (transaction_driver.escribir[i]==1) begin//la transaccion que tenga el escribir en otro dispositivo  se analiza si es un broadcast o una escritura normal, en ambos casos se almacena la transaccion en la cola para su uso posterior
-                if (transaction_driver.device_dest[i]==8'hFF) begin
-                  for (int f=0; f<(15); f++) begin
-                    temp = new();
-                    temp.enviado=i;
-                    temp.Dato=transaction_driver.packet[i];
-                    temp.tiempo_lectura=transaction_driver.tiempo_lectura;
-                    cola.push_back(temp);
-                  end
-              end else begin
                 temp = new();
                 temp.enviado=i;
                 temp.Dato=transaction_driver.packet[i];
@@ -140,28 +131,27 @@ class checkers #(parameter  pckg_sz = 40);
                 cola.push_back(temp);
               end
            end
-      end
-         if (transaction_driver.reset==1) begin //en el caso de un reset de hace pop a los datos almacenados en el cola enviando las transacciones al scoreboard que fueron invalidados
-        while(cola.size()>0) begin
-          auxiliar=cola.pop_back; // se saca cada dato de la cola y se envia al scoreboard indicando el reset
-          to_sb = new();
-          to_sb.dato=auxiliar.Dato;
-          to_sb.tiempo_escritura=0;
-          to_sb.device_dest=auxiliar.Dato[pckg_sz-9:pckg_sz-16];
-          to_sb.latencia=0;
-          to_sb.tiempo_lectura=auxiliar.tiempo_lectura;
-          to_sb.completado = 0;
-          to_sb.valido=0;
-          to_sb.reset = 1;
-          to_sb.overflow = 0;
-          to_sb.device_env=auxiliar.enviado;
-          to_sb.print("Checker:Transaccion Completada");
-          i_checker_scoreboard_mbx.put(to_sb);
-          $display("Dato_abortado= %h, Dispositivo_que_envia = %h, Dispositivo que recibe= %h",auxiliar.Dato[pckg_sz-9:0],auxiliar.enviado,auxiliar.Dato[pckg_sz-1:pckg_sz-8]);
+          if (transaction_driver.reset==1) begin //en el caso de un reset de hace pop a los datos almacenados en el cola enviando las transacciones al scoreboard que fueron invalidados
+            while(cola.size()>0) begin
+              auxiliar=cola.pop_back; // se saca cada dato de la cola y se envia al scoreboard indicando el reset
+              to_sb = new();
+              to_sb.dato=auxiliar.Dato;
+              to_sb.tiempo_escritura=0;
+              to_sb.device_dest=auxiliar.Dato[pckg_sz-9:pckg_sz-16];
+              to_sb.latencia=0;
+              to_sb.tiempo_lectura=auxiliar.tiempo_lectura;
+              to_sb.completado = 0;
+              to_sb.valido=0;
+              to_sb.reset = 1;
+              to_sb.overflow = 0;
+              to_sb.device_env=auxiliar.enviado;
+              to_sb.print("Checker:Transaccion Completada");
+              i_checker_scoreboard_mbx.put(to_sb);
+              $display("Dato_abortado= %h, Dispositivo_que_envia = %h, Dispositivo que recibe= %h",auxiliar.Dato[pckg_sz-9:0],auxiliar.enviado,auxiliar.Dato[pckg_sz-1:pckg_sz-8]);
+            end
+          end
         end
-      end
 	  end
-  end
      endtask 
 endclass 
 

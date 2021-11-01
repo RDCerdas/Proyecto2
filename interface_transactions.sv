@@ -27,10 +27,10 @@ class trans_router #(parameter pckg_sz = 40);
   constraint const_retardo {retardo <= max_retardo; retardo> 0;}
   
   // Constraint de los dispositivos de destino
-  constraint const_device_dest { foreach(device_dest[i]){device_dest[i] inside{[0:16-1], {8{1'b1}}}; device_dest[i]!=i;}}
+  constraint const_device_dest { foreach(device_dest[i]){device_dest[i] inside{[0:16-1]}; device_dest[i]!=i;}}
 
   // Probabilidad de reset
-  constraint reset_prop {reset dist{0:=99, 1:=01};}
+  constraint reset_prop {reset dist{0:=98, 1:=02};}
 
   // Probabilidad de escribir, para reducir que se produzca una gran cantida de reset
   constraint escribir_prop {foreach(escribir[i])escribir[i] dist{0:=70, 1:=30};}

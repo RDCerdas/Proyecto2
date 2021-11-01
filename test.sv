@@ -126,21 +126,6 @@ class test2_1 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
     task run;
         super.run();
 
-        // Casos de esquina
-        // Broadcast en todos los dispositivos
-        instruccion = new();
-      	instruccion.num_transacciones = 10;
-        instruccion.retardo = 10;
-        instruccion.tipo_secuencia = sec_trans_especificas;
-        for (int i=0; i<16; ++i) begin
-            // Broadcast en todos los dispositivos
-            // Se alternan los modos de trabajo
-            instruccion.enviar_dato_especifico(i, 'hFF, i%2, 'hff);
-        end
-        
-        test_agent_mbx_inst.put(instruccion);
-        $display("[%g]  Test: Enviadas transacciones en un dispositivo",$time);
-
         // Envío desde todos los dispositivos a dispositivo 0
         instruccion = new();
       	instruccion.num_transacciones = 10;
@@ -155,20 +140,6 @@ class test2_1 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
         test_agent_mbx_inst.put(instruccion);
         $display("[%g]  Test: Enviadas transacciones en un dispositivo",$time);
 
-        // Intrucción de broadcast anterior con reset
-        instruccion = new();
-      	instruccion.num_transacciones = 10;
-        instruccion.retardo = 10;
-        instruccion.tipo_secuencia = sec_trans_especificas;
-        for (int i=0; i<16; ++i) begin
-            // Broadcast en todos los dispositivos
-            // Se alternan los modos de trabajo
-            instruccion.enviar_dato_especifico(i, 'hFF, i%2, 'hff);
-        end
-        instruccion.reset = 1;
-
-        test_agent_mbx_inst.put(instruccion);
-        $display("[%g]  Test: Enviadas transacciones en un dispositivo",$time);
 
         // Intrucción de envío de datos simultaneo anteriores con reset
         instruccion = new();
