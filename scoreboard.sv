@@ -54,6 +54,7 @@ int file_max_bw;
               $display("\n###################\n");
               $display("Misses = %d", m_misses);
               $display("Matches = %d", m_matches);
+	      $display("Paquete = $d ", pckg_sz);
               $display("\n###################\n");
               $display("[%g] Score board: el retardo promedio es: %0.3f", $time, retardo_promedio);
             end

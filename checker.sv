@@ -70,7 +70,19 @@ class checkers #(parameter  pckg_sz = 40);
            end
           if (tamano==0) begin//si el dato no se encontró se finaliza el test
            	 transaction_monitor.print("Checker: El dato recibido por el monitor no fue enviado por el driver");
-		 $finish(1);
+		 $error("Dato incorrecto");
+              to_sb = new();
+           	   to_sb.dato=Dato;
+           	   to_sb.tiempo_escritura=0;
+               to_sb.device_dest= Dato [pckg_sz-9:pckg_sz-16];
+           	   to_sb.latencia=0;
+           	   to_sb.completado = 0;
+           	   to_sb.valido= 0;
+		           to_sb.reset = 0;
+               to_sb.overflow= 0;
+           	   to_sb.print("Checker:Transaccion Completada");
+           	   i_checker_scoreboard_mbx.put(to_sb);
+		 //$finish(1);
            end
         end
         

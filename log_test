@@ -1,8 +1,8 @@
-Command: vcs -Mupdate parameters.sv testbench.sv -o salida -full64 -sverilog -kdb \
+Command: vcs -Mupdate parameters.sv testbench.sv -o salida_5 -full64 -sverilog -kdb \
 -debug_acc+all -debug_region+cell+encrypt -l log_test +lint=TFIPC-L -debug_acces+r \
 -cm tgl+cond+assert
                          Chronologic VCS (TM)
-       Version R-2020.12-SP2_Full64 -- Thu Oct 28 11:17:14 2021
+       Version R-2020.12-SP2_Full64 -- Tue Nov  2 20:06:07 2021
 
                     Copyright (c) 1991 - 2021 Synopsys, Inc.
    This software and the associated documentation are proprietary to Synopsys,
@@ -61,51 +61,60 @@ Library.sv, 1072
 VCS Coverage Metrics Release R-2020.12-SP2_Full64 Copyright (c) 1991-2020 by Synopsys Inc.
 Notice: Ports coerced to inout, use -notice for details
 Starting vcs inline pass...
-34 modules and 0 UDP read.
+35 modules and 0 UDP read.
 recompiling package vcs_paramclassrepository
+recompiling module mesh_if
 recompiling module prll_d_reg
 recompiling module prll_d_ltch_no_rst
 recompiling module prll_d_ltch
+recompiling module neg_edge
+recompiling module fifo_flops
 recompiling module fifo_ltch
 recompiling module fifo_ltch_no_rst
 recompiling module rst_lgc
 recompiling module ntrpt_cam_fifo
 recompiling module mem_latch
+recompiling module tri_buf
+recompiling module parallel_serial
 recompiling module serializer
+recompiling module Read_st_Mchn
+recompiling module Write_st_Mchn
 recompiling module bs_ntrfs
 recompiling module bs_gnrtr
 recompiling module bs_ntrfs_n_rbtr
 recompiling module bs_gnrtr_n_rbtr
 recompiling module prll_rgstr
+recompiling module prll_bs_ntrfs
+recompiling module prll_bs_gnrtr_n_rbtr_fifo
 recompiling module conector
 recompiling module router_bus_gnrtr
 recompiling module router_bus_interface
+recompiling module rtr_rbtr_cntrl
+recompiling module tri_buf_mux
+recompiling module param_mux_single_bit
 recompiling module mesh_gnrtr
+recompiling module prll_bus_interface_cn_rbtr
+recompiling module prll_bus_gnrtr_cn_rbtr
 recompiling module wrapper
 recompiling module test_bench
-21 of 34 modules done
-	However, due to incremental compilation, only 21 modules need to be compiled. 
-make: Warning: File 'filelist.cu' has modification time 717 s in the future
-make[1]: Warning: File 'filelist.cu' has modification time 717 s in the future
+All of 35 modules done
+make: Warning: File 'filelist.cu' has modification time 736 s in the future
+make[1]: Warning: File 'filelist.cu' has modification time 736 s in the future
 rm -f _cuarc*.so _csrc*.so pre_vcsobj_*.so share_vcsobj_*.so
 make[1]: warning:  Clock skew detected.  Your build may be incomplete.
-make[1]: Warning: File 'filelist.cu' has modification time 717 s in the future
-ld -shared  -Bsymbolic --no-relax  -o .//../salida.daidir//_cuarc0.so objs/amcQw_d.o \
-
-rm -f _cuarc0.so
+make[1]: Warning: File 'filelist.cu' has modification time 736 s in the future
 make[1]: warning:  Clock skew detected.  Your build may be incomplete.
-if [ -x ../salida ]; then chmod a-x ../salida; fi
-g++  -o ../salida      -rdynamic  -Wl,-rpath='$ORIGIN'/salida.daidir -Wl,-rpath=./salida.daidir \
+if [ -x ../salida_5 ]; then chmod a-x ../salida_5; fi
+g++  -o ../salida_5      -rdynamic  -Wl,-rpath='$ORIGIN'/salida_5.daidir -Wl,-rpath=./salida_5.daidir \
 -Wl,-rpath=/mnt/vol_NFS_rh003/tools/vcs/R-2020.12-SP2/linux64/lib -L/mnt/vol_NFS_rh003/tools/vcs/R-2020.12-SP2/linux64/lib \
--Wl,-rpath-link=./  /usr/lib64/libnuma.so.1     _1502311_archive_1.so _prev_archive_1.so \
-_cuarc0.so  SIM_l.o      rmapats_mop.o rmapats.o rmar.o rmar_nd.o  rmar_llvm_0_1.o \
-rmar_llvm_0_0.o           -lvirsim -lerrorinf -lsnpsmalloc -lvfs    -lvcsnew -lsimprofile \
--lreader_common /mnt/vol_NFS_rh003/tools/vcs/R-2020.12-SP2/linux64/lib/libBA.a -luclinative \
-/mnt/vol_NFS_rh003/tools/vcs/R-2020.12-SP2/linux64/lib/vcs_tls.o   -Wl,-whole-archive \
+-Wl,-rpath-link=./  /usr/lib64/libnuma.so.1   objs/amcQw_d.o   _4090082_archive_1.so \
+SIM_l.o      rmapats_mop.o rmapats.o rmar.o rmar_nd.o  rmar_llvm_0_1.o rmar_llvm_0_0.o \
+-lvirsim -lerrorinf -lsnpsmalloc -lvfs    -lvcsnew -lsimprofile -lreader_common /mnt/vol_NFS_rh003/tools/vcs/R-2020.12-SP2/linux64/lib/libBA.a \
+-luclinative /mnt/vol_NFS_rh003/tools/vcs/R-2020.12-SP2/linux64/lib/vcs_tls.o   -Wl,-whole-archive \
 -lvcsucli    -Wl,-no-whole-archive        _vcs_pli_stub_.o   /mnt/vol_NFS_rh003/tools/vcs/R-2020.12-SP2/linux64/lib/vcs_save_restore_new.o \
 /mnt/vol_NFS_rh003/tools/verdi/R-2020.12-SP2/share/PLI/VCS/LINUX64/pli.a -ldl  -lc \
 -lm -lpthread -ldl 
-../salida up to date
+../salida_5 up to date
 make: warning:  Clock skew detected.  Your build may be incomplete.
-CPU time: 3.897 seconds to compile + .857 seconds to elab + .321 seconds to link
+CPU time: 3.124 seconds to compile + .972 seconds to elab + .319 seconds to link
 Verdi KDB elaboration done and the database successfully generated: 0 error(s), 0 warning(s)

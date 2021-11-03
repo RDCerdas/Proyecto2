@@ -15,6 +15,7 @@ class base_test #(parameter pckg_sz = 40, fifo_depth = 4);
         test_sb_mbx_inst = new();
         ambiente_inst = new(test_agent_mbx_inst, test_sb_mbx_inst);
         ambiente_inst._if = _if;
+	$display("Fifo depth = %d", fifo_depth);
     endfunction //new()
 
     task run();
@@ -37,7 +38,7 @@ class test1_1 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
         // Definición de las partes de la prueba
         // Primera sección pruebas aleatorias y de caso de esquina
         instruccion = new();
-      	instruccion.num_transacciones = 2000;
+      	instruccion.num_transacciones = 4000;
         instruccion.max_retardo = 30;
         instruccion.tipo_secuencia = sec_trans_aleatorias;
         test_agent_mbx_inst.put(instruccion);
@@ -102,14 +103,14 @@ class test1_3 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
 
         // Envío de escritura en todos los dispositivos
         instruccion = new();
-      	instruccion.num_transacciones = 500;
+      	instruccion.num_transacciones = 20000;
         instruccion.max_retardo = 1;
         instruccion.tipo_secuencia = sec_escrituras_aleatorias;
         test_agent_mbx_inst.put(instruccion);
         $display("[%g]  Test: Enviadas transacciones en todos los dispositivos",$time);
 
 
-	    #2000000;
+	    #20000000;
       test_sb_mbx_inst.put(append_csv_max_bw);
       test_sb_mbx_inst.put(report_csv);
       test_sb_mbx_inst.put(retraso_promedio);

@@ -1,15 +1,14 @@
 printf "Fifo Depth,Max Bandwidth(Mbps)" > max_bandwidth.csv
 printf "Fifo Depth,Min Bandwidth(Mbps)" > min_bandwidth.csv
 source /mnt/vol_NFS_rh003/estudiantes/archivos_config/synopsys_tools.sh
-$[RANDOM%10+1]
 
 
 
-for pckg in  $[RANDOM%40+40] 
+for pckg in 70 
 	do
 	for test in 1 2 3 4 5 	
 	do
-		for fifo in $[RANDOM%120+4]   
+		for fifo in 3   
 		do
 			printf "\x60define SCRIPT 1 \n" > parameters.sv
 			printf "parameter pckg_sz = %d;\nparameter test = %d;\n parameter fifo_depth=%d;\n" $pckg $test $fifo  >> parameters.sv
@@ -22,3 +21,5 @@ for pckg in  $[RANDOM%40+40]
 		done
 	done
 done
+urg -dir merge.vdb -dir salida_1.vdb -dir salida_2.vdb -dir salida_3.vdb -dir salida_4.vdb -dir salida_5.vdb -dbname merge.vdb
+verdi -cov -covdir merge.vdb&
