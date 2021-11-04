@@ -11,7 +11,7 @@ Existen cuatro alternativas para correr el código:
 ### Corrida única
 La primera es una corrida simple, para esto se utiliza:`source comando.sh`
 
-Lo que hace es cargar las herramientas, compila el código con vcs y lo corre, si además se quiere obtener la covertura se puede correr: `verdi -cov -covdir salida.vdb&`
+Lo que hace es cargar las herramientas, compila el código con vcs y lo corre, si además se quiere obtener la covertura de esta única prueba se puede correr: `verdi -cov -covdir salida.vdb&`
 
 ### Corrida para cálculo de bandwidth
 Esta permite hacer multiples corridas del test 1.2 y 1.2 que generan los datos de ancho de banda. Al finalizar genera las gráficas.
