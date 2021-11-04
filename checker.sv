@@ -28,7 +28,7 @@ class checkers #(parameter  pckg_sz = 40);
   int tamano;
   bit [pckg_sz-1:0] Dato;
   bit [8:0] destino;
-  int timeout = 5000;
+  int timeout = 10000;
   
   function new();
    this.cola = {};
@@ -163,7 +163,25 @@ class checkers #(parameter  pckg_sz = 40);
             end
           end
         end
-	  end
+        foreach (cola[a]) begin
+          if(cola[a].tiempo_lectura+timeout < $time) begin
+            cola[a].print("Checker: Error timeout de dato");
+            $error("Dato incorrecto");
+            to_sb = new();
+           	to_sb.dato=Dato;
+           	to_sb.tiempo_escritura=0;
+            to_sb.device_dest= Dato [pckg_sz-9:pckg_sz-16];
+           	to_sb.latencia=0;
+           	to_sb.completado = 0;
+           	to_sb.valido= 0;
+		        to_sb.reset = 0;
+            to_sb.overflow= 0;
+           	to_sb.print("Checker:Transaccion Completada");
+           	i_checker_scoreboard_mbx.put(to_sb);
+            $finish(1);
+          end
+        end
+	    end
      endtask 
 endclass 
 
