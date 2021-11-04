@@ -68,7 +68,7 @@ class checkers #(parameter  pckg_sz = 40);
 		           break;
              end
            end
-          if (tamano==0) begin//si el dato no se encontró se finaliza el test
+          if (tamano==0) begin//si el dato de overflow no se encontró se envía a scoreboard para reporte
            	 transaction_monitor.print("Checker: El dato recibido por el monitor no fue enviado por el driver");
 		 $error("Dato incorrecto");
               to_sb = new();
@@ -79,7 +79,7 @@ class checkers #(parameter  pckg_sz = 40);
            	   to_sb.completado = 0;
            	   to_sb.valido= 0;
 		           to_sb.reset = 0;
-               to_sb.overflow= 0;
+               to_sb.overflow= 1;
            	   to_sb.print("Checker:Transaccion Completada");
            	   i_checker_scoreboard_mbx.put(to_sb);
 		 //$finish(1);
@@ -115,6 +115,7 @@ class checkers #(parameter  pckg_sz = 40);
            end
           if (tamano==0) begin//si el dato no se encontró se envia la transaccion como invalida 
 		 $error("Dato incorrecto");
+            // Se envía a scoreboard como no válido
               to_sb = new();
            	   to_sb.dato=Dato;
            	   to_sb.tiempo_escritura=0;
@@ -163,10 +164,12 @@ class checkers #(parameter  pckg_sz = 40);
             end
           end
         end
+        // Se comprueba si algún paquete hizo timeout
         foreach (cola[a]) begin
           if(cola[a].tiempo_lectura+timeout < $time) begin
             cola[a].print("Checker: Error timeout de dato");
             $error("Dato incorrecto");
+            // Se envía al scoreboard y se borra
             to_sb = new();
            	to_sb.dato=cola[a].Dato;
            	to_sb.tiempo_escritura=0;
@@ -177,7 +180,7 @@ class checkers #(parameter  pckg_sz = 40);
 		        to_sb.reset = 0;
             to_sb.overflow= 0;
            	to_sb.print("Checker:Transaccion Completada");
-		cola.delete(a);
+		        cola.delete(a);
            	i_checker_scoreboard_mbx.put(to_sb);
 		break;
            // $finish(1);

@@ -179,13 +179,11 @@ class test2_2 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
         instruccion.retardo = 10;
         instruccion.tipo_secuencia = sec_trans_especificas;
         for (int i=0; i<4; ++i) begin
-            // Broadcast en todos los dispositivos
-            // Se alternan los modos de trabajo
+            // Se altera el modo para que todos vayan por la misma ruta
             instruccion.enviar_dato_especifico(i, i, 0 , 15);
         end
         for (int i=4; i<8; ++i) begin
-            // Broadcast en todos los dispositivos
-            // Se alternan los modos de trabajo
+            // Se altera el modo para que todos vayan por la misma ruta
             instruccion.enviar_dato_especifico(i, i, 1 , 15);
         end
         
