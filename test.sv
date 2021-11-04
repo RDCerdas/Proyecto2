@@ -15,7 +15,6 @@ class base_test #(parameter pckg_sz = 40, fifo_depth = 4);
         test_sb_mbx_inst = new();
         ambiente_inst = new(test_agent_mbx_inst, test_sb_mbx_inst);
         ambiente_inst._if = _if;
-	$display("Fifo depth = %d", fifo_depth);
     endfunction //new()
 
     task run();
@@ -110,7 +109,7 @@ class test1_3 #(parameter pckg_sz = 40, fifo_depth = 4) extends base_test #(pckg
         $display("[%g]  Test: Enviadas transacciones en todos los dispositivos",$time);
 
 
-	    #20000000;
+	    #5000000;
       test_sb_mbx_inst.put(append_csv_max_bw);
       test_sb_mbx_inst.put(report_csv);
       test_sb_mbx_inst.put(retraso_promedio);
